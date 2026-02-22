@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Background Circle (Ultra-Clean Founder Style) -->
+  <circle cx="50" cy="50" r="48" fill="#111827"/>
+  
+  <!-- Geometric S -->
+  <text x="50%" y="54%" 
+        text-anchor="middle" 
+        dominant-baseline="middle"
+        font-family="Inter, Poppins, Arial, sans-serif"
+        font-size="52"
+        font-weight="600"
+        fill="#FFFFFF">
+    S
+  </text>
+</svg>

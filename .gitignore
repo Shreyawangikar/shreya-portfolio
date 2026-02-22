@@ -1,0 +1,48 @@
+# ===============================
+# Frontend
+# ===============================
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ===============================
+# Backend (Flask)
+# ===============================
+backend/.env
+backend/chat_logs.db
+backend/__pycache__/
+backend/*.pyc
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+
+# Environment files
+.env
+.env.*
+
+# ===============================
+# OS / Editor
+# ===============================
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
