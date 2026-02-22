@@ -5,10 +5,8 @@ import ReactMarkdown from "react-markdown";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
-// Use Python backend (either local or deployed)
-const CHAT_URL = import.meta.env.VITE_PYTHON_API_URL 
-  ? `${import.meta.env.VITE_PYTHON_API_URL}/api/chat`
-  : "http://localhost:5000/api/chat";
+// Production backend URL
+const CHAT_URL = "https://shreya-portfolio-p501.onrender.com/api/chat";
 
 const quickQuestions = [
   "What projects has Shreya built?",
