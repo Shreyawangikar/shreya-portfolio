@@ -34,7 +34,11 @@ load_dotenv()
 app = Flask(__name__)
 
 # Configure CORS for frontend
-CORS(app)
+CORS(
+    app,
+    resources={r"/api/*": {"origins": "*"}},
+    supports_credentials=True
+)
 
 # Initialize database on startup
 init_database()
