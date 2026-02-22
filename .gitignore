@@ -22,6 +22,7 @@ backend/.env
 backend/chat_logs.db
 backend/__pycache__/
 backend/*.pyc
+backend/venv/
 
 # Python
 __pycache__/
