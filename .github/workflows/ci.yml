@@ -1,0 +1,107 @@
+# =============================================================
+# CI/CD Pipeline — Shreya's Portfolio
+# =============================================================
+# Triggers on push to main and pull requests.
+# Frontend: lint → build → test (React + Vite + Vitest)
+# Backend:  lint → syntax check (Flask + Python)
+# Deploy:   Vercel (frontend) + Render (backend) auto-deploy on push to main
+# =============================================================
+
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # -----------------------------------------------------------
+  # Frontend CI — React + TypeScript + Vite
+  # -----------------------------------------------------------
+  frontend:
+    name: Frontend CI
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Build
+        run: npm run build
+
+      - name: Run tests
+        run: npm run test
+
+  # -----------------------------------------------------------
+  # Backend CI — Python + Flask
+  # -----------------------------------------------------------
+  backend:
+    name: Backend CI
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Lint with flake8
+        run: |
+          pip install flake8
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 . --count --max-line-length=150 --statistics --exit-zero
+
+      - name: Syntax check
+        run: python -m py_compile app.py
+
+      - name: Check imports
+        run: python -c "from database import init_database; from services import get_openrouter_service; from models import ChatRequest, ChatResponse; print('All imports OK')"
+
+  # -----------------------------------------------------------
+  # Deploy notification (runs only on push to main)
+  # -----------------------------------------------------------
+  deploy:
+    name: Deploy Status
+    runs-on: ubuntu-latest
+    needs: [frontend, backend]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Deploy summary
+        run: |
+          echo "✅ All CI checks passed!"
+          echo ""
+          echo "🚀 Deployments triggered automatically:"
+          echo "   Frontend → Vercel (auto-deploys on push to main)"
+          echo "   Backend  → Render (auto-deploys on push to main)"
+          echo ""
+          echo "📋 Verify deployments:"
+          echo "   Frontend: https://shreya-portfolio-azure.vercel.app"
+          echo "   Backend:  https://shreya-portfolio-p501.onrender.com/health"
