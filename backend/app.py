@@ -42,6 +42,14 @@ CORS(
     supports_credentials=False
 )
 
+@app.after_request
+def add_cors_headers(response):
+    """Ensure CORS headers are on every response (belt-and-suspenders)."""
+    response.headers["Access-Control-Allow-Origin"] = "https://shreya-portfolio-azure.vercel.app"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    return response
+
 
 # Initialize database on startup
 init_database()
