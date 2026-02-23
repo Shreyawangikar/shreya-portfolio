@@ -32,7 +32,12 @@ load_dotenv()
 # ============================================================
 
 app = Flask(__name__)
-
+@app.after_request
+def add_cors_headers(response):
+    response.headers["Access-Control-Allow-Origin"] = "https://shreya-portfolio-azure.vercel.app"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    return response
 # Configure CORS for frontend
 CORS(
     app,
@@ -40,6 +45,7 @@ CORS(
     methods=["GET", "POST", "OPTIONS"],
     allow_headers=["Content-Type", "Authorization"]
 )
+
 
 # Initialize database on startup
 init_database()
@@ -124,8 +130,10 @@ def health():
     }), 200
 
 
-@app.route("/api/chat", methods=["POST"])
+@app.route("/api/chat", methods=["POST", "OPTIONS"])
 def chat():
+    if request.method == "OPTIONS":
+        return "", 200
     """
     Main chat endpoint for AI conversation.
     
