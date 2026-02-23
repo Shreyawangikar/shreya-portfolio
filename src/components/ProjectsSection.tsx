@@ -1,6 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { ExternalLink, Github, Globe, Zap, Brain, CreditCard, Sparkles } from "lucide-react";
+import { ExternalLink, Github, Globe, Zap, Brain, CreditCard, Sparkles, Layout } from "lucide-react";
 import ProjectModal, { ProjectDetails } from "./ProjectModal";
 
 const projects: ProjectDetails[] = [
@@ -11,7 +11,6 @@ const projects: ProjectDetails[] = [
     tech: ["React", "Node.js", "MongoDB", "OpenAI", "TailwindCSS"],
     icon: Sparkles,
     github: "https://github.com/Shreyawangikar",
-    live: "#",
     problem: "Students struggle to find relevant career paths and lack connection to alumni who could mentor them.",
     solution: "An intelligent platform that uses AI to match students with career opportunities and connects them with relevant alumni mentors based on their skills and interests.",
     features: [
@@ -34,7 +33,6 @@ const projects: ProjectDetails[] = [
     tech: ["React", "Express", "PostgreSQL", "Maps API", "Chart.js"],
     icon: Globe,
     github: "https://github.com/Shreyawangikar",
-    live: "#",
     problem: "Planning multi-city trips is complex and time-consuming, with budget tracking often done separately.",
     solution: "An integrated travel planning platform that combines itinerary creation, budget management, and real-time suggestions in one seamless experience.",
     features: [
@@ -56,7 +54,6 @@ const projects: ProjectDetails[] = [
     tech: ["React", "Node.js", "MongoDB", "Socket.io", "JWT"],
     icon: Zap,
     github: "https://github.com/Shreyawangikar",
-    live: "#",
     problem: "Teams need a simple yet powerful tool to manage tasks and track project progress in real-time.",
     solution: "A real-time collaborative platform with Kanban boards, team management, and customizable workflows.",
     features: [
@@ -78,7 +75,6 @@ const projects: ProjectDetails[] = [
     tech: ["JavaScript", "Node.js", "Express", "Prisma", "React", "Vite", "TailwindCSS", "PostgreSQL"],
     icon: CreditCard,
     github: "https://github.com/Shreyawangikar",
-    live: "#",
     problem: "Subscription-based businesses need a unified system to manage complex workflows: recurring billing, plan configuration, tax/discount rules, lifecycle transitions, invoicing, and financial reporting — typically handled by fragmented tools.",
     solution: "A modular ERP-style web application with MVC architecture that automates the complete subscription lifecycle, from quotation through activation to closure, with integrated tax/discount engines, recurring billing automation, and comprehensive analytics.",
     features: [
@@ -136,6 +132,38 @@ const projects: ProjectDetails[] = [
     ],
     duration: "3-4 weeks",
     role: "Algorithm Engineer / Full Stack Developer"
+  },
+  {
+    title: "Shreya's Portfolio Website",
+    tag: "Full-stack",
+    description: "A modern, interactive developer portfolio featuring an AI-powered chatbot, 3D animations, dark/light themes, and a Flask backend deployed on Render.",
+    tech: ["React", "TypeScript", "Vite", "TailwindCSS", "Framer Motion", "Flask", "Python", "OpenRouter API"],
+    icon: Layout,
+    github: "https://github.com/Shreyawangikar/shreya-portfolio",
+    live: "https://shreya-portfolio-azure.vercel.app",
+    problem: "Generic portfolio templates lack personality, interactivity, and fail to showcase real engineering skills — recruiters rarely remember them.",
+    solution: "A custom-built portfolio with an AI chatbot that answers questions about Shreya, smooth animations, a command palette, and a fully deployed Flask backend with rate limiting and conversation memory.",
+    features: [
+      "AI chatbot powered by OpenRouter (Liquid LFM model)",
+      "Conversation memory with last 5 messages for context",
+      "Rate limiting (20 req/min) with sliding window",
+      "3D scene with Three.js",
+      "Command palette (Ctrl+K) for quick navigation",
+      "Dark/light theme toggle",
+      "Interactive project modals with detailed case studies",
+      "GitHub & LeetCode stats integration",
+      "Responsive design with mobile support",
+      "SQLite chat logging for analytics"
+    ],
+    architecture: "Frontend: React + TypeScript + Vite → TailwindCSS + Framer Motion for UI → Vercel deployment. Backend: Flask + Gunicorn → OpenRouter API for AI → SQLite for chat logs → Render deployment. CORS configured for cross-origin communication.",
+    achievements: [
+      "Full-stack deployment (Vercel + Render)",
+      "AI integration with conversation context",
+      "Production-grade backend with rate limiting",
+      "Custom design from scratch — no templates"
+    ],
+    duration: "2 weeks",
+    role: "Full Stack Developer / Designer"
   },
 ];
 
@@ -246,15 +274,17 @@ const ProjectsSection = () => {
                   >
                     <Github size={16} />
                   </a>
-                  <a 
-                    href={project.live} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                    className="p-2.5 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-primary/30 transition-colors duration-200"
-                  >
-                    <ExternalLink size={16} />
-                  </a>
+                  {project.live && (
+                    <a 
+                      href={project.live} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="p-2.5 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-primary/30 transition-colors duration-200"
+                    >
+                      <ExternalLink size={16} />
+                    </a>
+                  )}
                 </div>
               </div>
 

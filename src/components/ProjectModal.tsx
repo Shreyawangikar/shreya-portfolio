@@ -7,7 +7,7 @@ export interface ProjectDetails {
   description: string;
   tech: string[];
   github: string;
-  live: string;
+  live?: string;
   icon: React.ComponentType<{ className?: string; size?: number }>;
   // Extended details for modal
   problem?: string;
@@ -194,16 +194,18 @@ const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) => {
                         <span className="text-sm text-foreground/80 group-hover:text-foreground">View Source Code</span>
                         <ExternalLink size={14} className="ml-auto text-muted-foreground" />
                       </a>
-                      <a
-                        href={project.live}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-3 p-3 rounded-xl bg-primary/10 hover:bg-primary/20 transition-colors group"
-                      >
-                        <ExternalLink size={18} className="text-primary" />
-                        <span className="text-sm text-foreground/80 group-hover:text-foreground">Live Demo</span>
-                        <ArrowRight size={14} className="ml-auto text-primary" />
-                      </a>
+                      {project.live && (
+                        <a
+                          href={project.live}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-3 p-3 rounded-xl bg-primary/10 hover:bg-primary/20 transition-colors group"
+                        >
+                          <ExternalLink size={18} className="text-primary" />
+                          <span className="text-sm text-foreground/80 group-hover:text-foreground">Live Demo</span>
+                          <ArrowRight size={14} className="ml-auto text-primary" />
+                        </a>
+                      )}
                     </div>
                   </section>
 
