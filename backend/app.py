@@ -36,8 +36,9 @@ app = Flask(__name__)
 # Configure CORS for frontend
 CORS(
     app,
-    resources={r"/api/*": {"origins": "*"}},
-    supports_credentials=True
+    resources={r"/api/*": {"origins": "https://shreya-portfolio-azure.vercel.app"}},
+    methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"]
 )
 
 # Initialize database on startup
