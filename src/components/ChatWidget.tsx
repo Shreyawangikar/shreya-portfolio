@@ -6,7 +6,7 @@ import ReactMarkdown from "react-markdown";
 type Msg = { role: "user" | "assistant"; content: string };
 
 // Production backend URL
-const CHAT_URL = "https://shreya-portfolio-p501.onrender.com/api/chat";
+const CHAT_URL = "https://shreya-portfolio-p5o1.onrender.com/api/chat";
 
 const quickQuestions = [
   "What projects has Shreya built?",
