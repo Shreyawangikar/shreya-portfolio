@@ -13,10 +13,12 @@ import {
   Layers
 } from 'lucide-react';
 
-const DEFAULT_PARTICLE_COUNT = 12;
-const DEFAULT_SPOTLIGHT_RADIUS = 300;
+export const DEFAULT_PARTICLE_COUNT = 12;
+export const DEFAULT_SPOTLIGHT_RADIUS = 300;
 // Blue theme to match portfolio primary color (hsl 225 100% 65%)
-const DEFAULT_GLOW_COLOR = '76, 131, 255';
+export const DEFAULT_GLOW_COLOR = '76, 131, 255';
+// Light mode: softer blue that works on white backgrounds
+export const LIGHT_MODE_GLOW_COLOR = '37, 99, 235';
 const MOBILE_BREAKPOINT = 768;
 
 const cardData = [
@@ -116,7 +118,7 @@ interface ParticleCardProps {
   enableMagnetism?: boolean;
 }
 
-const ParticleCard = ({
+export const ParticleCard = ({
   children,
   className = '',
   disableAnimations = false,
@@ -358,7 +360,7 @@ interface GlobalSpotlightProps {
   glowColor?: string;
 }
 
-const GlobalSpotlight = ({
+export const GlobalSpotlight = ({
   gridRef,
   disableAnimations = false,
   enabled = true,
@@ -495,7 +497,7 @@ interface BentoCardGridProps {
   gridRef: React.RefObject<HTMLDivElement>;
 }
 
-const BentoCardGrid = ({ children, gridRef }: BentoCardGridProps) => (
+export const BentoCardGrid = ({ children, gridRef }: BentoCardGridProps) => (
   <div
     className="bento-section grid gap-2 p-3 max-w-[54rem] mx-auto select-none relative"
     style={{ fontSize: 'clamp(1rem, 0.9rem + 0.5vw, 1.5rem)' }}

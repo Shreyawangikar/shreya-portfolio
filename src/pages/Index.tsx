@@ -15,7 +15,6 @@ import WhyHireMe from "@/components/WhyHireMe";
 import GitHubStats from "@/components/GitHubStats";
 import LeetCodeStats from "@/components/LeetCodeStats";
 import CertificationsSection from "@/components/CertificationsSection";
-import MagicBento from "@/components/MagicBento";
 
 const Index = () => {
   return (
@@ -30,27 +29,6 @@ const Index = () => {
         <ProjectsSection />
         <SkillsSection />
         <CertificationsSection />
-        
-        {/* Magic Bento Showcase */}
-        <section className="py-20 relative">
-          <div className="max-w-6xl mx-auto px-6">
-            <div className="mb-10">
-              <p className="text-primary font-mono text-xs tracking-[0.15em] uppercase mb-3">
-                At a Glance
-              </p>
-              <h2 className="text-[32px] font-semibold tracking-tight">
-                What I Bring<span className="gradient-text">.</span>
-              </h2>
-            </div>
-            <MagicBento 
-              enableStars={true}
-              enableSpotlight={true}
-              enableBorderGlow={true}
-              clickEffect={true}
-              enableMagnetism={true}
-            />
-          </div>
-        </section>
 
         <WhyHireMe />
         <AchievementsSection />

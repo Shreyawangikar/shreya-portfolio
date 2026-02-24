@@ -1,7 +1,142 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { ExternalLink, Github, Globe, Zap, Brain, CreditCard, Sparkles, Layout } from "lucide-react";
 import ProjectModal, { ProjectDetails } from "./ProjectModal";
+import { useTheme } from "../contexts/ThemeContext";
+import {
+  ParticleCard,
+  GlobalSpotlight,
+  DEFAULT_GLOW_COLOR,
+  LIGHT_MODE_GLOW_COLOR,
+  DEFAULT_PARTICLE_COUNT,
+  DEFAULT_SPOTLIGHT_RADIUS,
+} from "./MagicBento";
+
+// ── Mobile breakpoint ──
+const MOBILE_BREAKPOINT = 768;
+
+const useMobileDetection = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= MOBILE_BREAKPOINT);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isMobile;
+};
+
+const ProjectCard = ({
+  project,
+  inView,
+  index,
+  onClick,
+  glowColor,
+  isMobile,
+}: {
+  project: ProjectDetails;
+  inView: boolean;
+  index: number;
+  onClick: () => void;
+  glowColor: string;
+  isMobile: boolean;
+}) => {
+  return (
+    <motion.div
+      key={project.title}
+      initial={{ opacity: 0, y: 20 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ delay: 0.05 + index * 0.08, duration: 0.5 }}
+    >
+      <ParticleCard
+        className="card card--border-glow group cursor-pointer rounded-xl p-5 border border-solid transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg h-full flex flex-col"
+        style={{
+          backgroundColor: "hsl(var(--card))",
+          borderColor: "hsl(var(--border))",
+          color: "hsl(var(--card-foreground))",
+          // @ts-expect-error CSS custom properties
+          "--glow-x": "50%",
+          "--glow-y": "50%",
+          "--glow-intensity": "0",
+          "--glow-radius": "200px",
+        }}
+        disableAnimations={isMobile}
+        particleCount={DEFAULT_PARTICLE_COUNT}
+        glowColor={glowColor}
+        enableTilt={false}
+        clickEffect={true}
+        enableMagnetism={true}
+      >
+        <div onClick={onClick} className="flex flex-col h-full">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/15 transition-colors duration-200">
+              <project.icon className="text-primary" size={20} />
+            </div>
+            <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-secondary text-muted-foreground">
+              {project.tag}
+            </span>
+          </div>
+
+          {/* Title */}
+          <h3 className="text-base font-semibold text-foreground mb-2 line-clamp-2">
+            {project.title}
+          </h3>
+
+          {/* Description */}
+          <p className="text-muted-foreground text-sm leading-relaxed mb-4 line-clamp-3 flex-1">
+            {project.description}
+          </p>
+
+          {/* Tech tags */}
+          <div className="flex flex-wrap gap-1.5 mb-4">
+            {project.tech.slice(0, 4).map((t) => (
+              <span
+                key={t}
+                className="text-[11px] px-2 py-0.5 rounded-md bg-muted text-muted-foreground font-mono group-hover:bg-primary/10 group-hover:text-primary/80 transition-colors"
+              >
+                {t}
+              </span>
+            ))}
+            {project.tech.length > 4 && (
+              <span className="text-[11px] px-2 py-0.5 rounded-md bg-muted text-muted-foreground font-mono">
+                +{project.tech.length - 4}
+              </span>
+            )}
+          </div>
+
+          {/* Links */}
+          <div className="flex gap-2 mt-auto">
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="p-2 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-primary/30 transition-colors duration-200"
+            >
+              <Github size={14} />
+            </a>
+            {project.live && (
+              <a
+                href={project.live}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="p-2 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-primary/30 transition-colors duration-200"
+              >
+                <ExternalLink size={14} />
+              </a>
+            )}
+          </div>
+
+          <div className="mt-3 text-xs text-muted-foreground/50 opacity-0 group-hover:opacity-100 transition-opacity">
+            Click to view details
+          </div>
+        </div>
+      </ParticleCard>
+    </motion.div>
+  );
+};
 
 const projects: ProjectDetails[] = [
   {
@@ -171,10 +306,15 @@ const categories = ["All", "AI / Full-stack", "Full-stack", "SaaS", "ERP", "Algo
 
 const ProjectsSection = () => {
   const ref = useRef(null);
+  const gridRef = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const [activeFilter, setActiveFilter] = useState("All");
   const [selectedProject, setSelectedProject] = useState<ProjectDetails | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { theme } = useTheme();
+  const isMobile = useMobileDetection();
+
+  const glowColor = theme === "light" ? LIGHT_MODE_GLOW_COLOR : DEFAULT_GLOW_COLOR;
 
   const filteredProjects = activeFilter === "All" 
     ? projects 
@@ -186,7 +326,16 @@ const ProjectsSection = () => {
   };
 
   return (
-    <section id="projects" className="py-20 relative" ref={ref}>
+    <section id="projects" className="py-20 relative bento-section" ref={ref}>
+      {/* GlobalSpotlight follows cursor across the project grid */}
+      <GlobalSpotlight
+        gridRef={gridRef}
+        disableAnimations={isMobile}
+        enabled={true}
+        spotlightRadius={DEFAULT_SPOTLIGHT_RADIUS}
+        glowColor={glowColor}
+      />
+
       <div className="max-w-6xl mx-auto px-6">
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -227,71 +376,59 @@ const ProjectsSection = () => {
           ))}
         </motion.div>
 
-        {/* Project grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {filteredProjects.map((project, i) => (
-            <motion.div
-              key={project.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.05 + i * 0.08, duration: 0.5 }}
-              onClick={() => openProjectModal(project)}
-              className="group glass rounded-xl p-6 hover:border-primary/20 transition-all duration-200 cursor-pointer card-hover"
-            >
-              <div className="flex flex-col md:flex-row md:items-center gap-6">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/15 transition-colors duration-200">
-                    <project.icon className="text-primary" size={22} />
-                  </div>
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-lg font-semibold text-foreground">
-                      {project.title}
-                    </h3>
-                    <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-secondary text-muted-foreground">
-                      {project.tag}
-                    </span>
-                  </div>
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-4 max-w-xl">
-                    {project.description}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tech.map((t) => (
-                      <span key={t} className="text-xs px-2.5 py-1 rounded-md bg-muted text-muted-foreground font-mono group-hover:bg-primary/10 group-hover:text-primary/80 transition-colors">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div className="flex gap-3 md:flex-col">
-                  <a 
-                    href={project.github} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                    className="p-2.5 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-primary/30 transition-colors duration-200"
-                  >
-                    <Github size={16} />
-                  </a>
-                  {project.live && (
-                    <a 
-                      href={project.live} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                      className="p-2.5 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-primary/30 transition-colors duration-200"
-                    >
-                      <ExternalLink size={16} />
-                    </a>
-                  )}
-                </div>
-              </div>
+        {/* MagicBento glow styles — theme-reactive */}
+        <style>{`
+          .card--border-glow::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            padding: 6px;
+            background: radial-gradient(var(--glow-radius) circle at var(--glow-x) var(--glow-y),
+              rgba(${glowColor}, calc(var(--glow-intensity) * 0.8)) 0%,
+              rgba(${glowColor}, calc(var(--glow-intensity) * 0.4)) 30%,
+              transparent 60%);
+            border-radius: inherit;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            pointer-events: none;
+            z-index: 1;
+          }
+          .card--border-glow:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,${theme === "light" ? "0.08" : "0.4"}),
+                         0 0 30px rgba(${glowColor}, ${theme === "light" ? "0.15" : "0.2"});
+          }
+          .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 100;
+          }
+          .particle::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: rgba(${glowColor}, 0.2);
+            border-radius: 50%;
+            z-index: -1;
+          }
+        `}</style>
 
-              <div className="mt-3 text-xs text-muted-foreground/50 opacity-0 group-hover:opacity-100 transition-opacity">
-                Click to view details
-              </div>
-            </motion.div>
+        {/* Project grid — 3 columns */}
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredProjects.map((project, i) => (
+            <ProjectCard
+              key={project.title}
+              project={project}
+              inView={inView}
+              index={i}
+              onClick={() => openProjectModal(project)}
+              glowColor={glowColor}
+              isMobile={isMobile}
+            />
           ))}
         </div>
 
