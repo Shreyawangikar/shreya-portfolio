@@ -233,4 +233,4 @@ For issues, check:
 
 ---
 
-**Built with ❤️ for the internship assignment**
+
