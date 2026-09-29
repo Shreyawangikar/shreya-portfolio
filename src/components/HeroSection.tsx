@@ -81,7 +81,7 @@ const HeroSection = () => {
           >
             <span className="inline-flex items-center gap-1.5 font-medium text-foreground">
               <Briefcase size={14} className="text-primary" />
-              Final-Year B.E. IT @ PICT (CGPA: 8.53)
+              Final-Year B.E. IT @ PICT (CGPA: 8.87)
             </span>
             <span className="hidden sm:inline text-border">|</span>
             <span className="inline-flex items-center gap-1.5">
@@ -158,7 +158,7 @@ const HeroSection = () => {
             className="flex justify-center gap-6 sm:gap-10 mb-10 flex-wrap"
           >
             {[
-              { num: "8.53", label: "CGPA @ PICT" },
+              { num: "8.87", label: "CGPA @ PICT" },
               { num: "2023–27", label: "B.E. IT" },
               { num: "Mastercard", label: "Code for Change '25" },
               { num: "Odoo '26", label: "Hackathon Finalist" },

@@ -77,9 +77,13 @@ const AboutSection = () => {
                   <p className="text-muted-foreground">B.E. Information Technology · Savitribai Phule Pune University</p>
                 </div>
                 <div className="text-right">
-                  <span className="font-mono text-primary font-medium">CGPA: 8.53</span>
+                  <span className="font-mono text-primary font-medium">CGPA: 8.87</span>
                   <p className="text-muted-foreground">2023–2027</p>
                 </div>
+              </div>
+              <div className="border-t border-border/30 pt-2 flex justify-between items-center text-[11px] text-muted-foreground">
+                <span>Bharat Bharti College · HSC (81%)</span>
+                <span>Oasis's English School · SSC (100%)</span>
               </div>
             </motion.div>
           </div>

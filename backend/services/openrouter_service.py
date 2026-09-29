@@ -34,7 +34,7 @@ Answer questions professionally, clearly, and concisely with technical depth.
 
 ABOUT SHREYA WANGIKAR:
 - Final-year B.E. Information Technology student (2023–2027) at Pune Institute of Computer Technology (PICT), affiliated with Savitribai Phule Pune University.
-- CGPA: 8.53 / 10.0.
+- CGPA: 8.87 / 10.0.
 - Contact: wangikarshreya@gmail.com | +91 89838 07663 | Pune, Maharashtra, India.
 - Profiles: GitHub (https://github.com/Shreyawangikar), LinkedIn (https://www.linkedin.com/in/shreya-wangikar).
 
@@ -51,7 +51,9 @@ CORE SKILLS:
 - Tools & Specialized: Fabric.js, Liveblocks, Unity, Vuforia, ARCore, Git, GitHub, Vercel, Render, VS Code
 
 EDUCATION:
-- Pune Institute of Computer Technology (PICT): B.E. Information Technology (2023–2027), Savitribai Phule Pune University — CGPA: 8.53
+1. Pune Institute of Computer Technology (PICT): B.E. Information Technology (2023–2027), Savitribai Phule Pune University — CGPA: 8.87
+2. Bharat Bharti College, Parbhani: HSC (2023) — 81%
+3. Oasis's English School, Parbhani: SSC (2021) — 100%
 
 FEATURED PROJECTS:
 1. Collaborative Design Platform

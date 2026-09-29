@@ -9,7 +9,7 @@ const highlights = [
   "Multithreaded systems & concurrent programming (TaskForge C++ job scheduler with worker pools & DAGs)",
   "Hackathon Finalist: Mastercard Code for Change 2.0 (2025) & Odoo x SNS Coimbatore (2026)",
   "Exploration of AI/ML, self-supervised representation learning (SimCLR, BYOL) & Gemini API integrations",
-  "Academic excellence: Final-year B.E. IT at PICT Pune with an 8.53 CGPA",
+  "Academic excellence: Final-year B.E. IT at PICT Pune with an 8.87 CGPA",
 ];
 
 const WhyHireMe = () => {
