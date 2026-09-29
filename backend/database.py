@@ -64,6 +64,18 @@ def init_database():
             ON chat_logs(timestamp)
         ''')
         
+        # Create contact_messages table
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS contact_messages (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                email TEXT NOT NULL,
+                message TEXT NOT NULL,
+                ip_address TEXT,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
+        
         print("[OK] Database initialized successfully")
 
 
@@ -140,6 +152,34 @@ def get_recent_logs(limit: int = 50) -> list:
             LIMIT ?
         ''', (limit,))
         
+        return [dict(row) for row in cursor.fetchall()]
+
+
+def save_contact_message(name: str, email: str, message: str, ip_address: str = None) -> int:
+    """
+    Save a contact form submission to the database.
+    """
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO contact_messages (name, email, message, ip_address, timestamp)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (name, email, message, ip_address, datetime.now()))
+        return cursor.lastrowid
+
+
+def get_contact_messages(limit: int = 50) -> list:
+    """
+    Retrieve contact messages.
+    """
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute('''
+            SELECT id, name, email, message, ip_address, timestamp
+            FROM contact_messages
+            ORDER BY timestamp DESC
+            LIMIT ?
+        ''', (limit,))
         return [dict(row) for row in cursor.fetchall()]
 
 

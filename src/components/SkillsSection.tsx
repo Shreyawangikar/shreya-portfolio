@@ -5,49 +5,68 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 // Professional skill descriptions for hover tooltips
 const skillDescriptions: Record<string, string> = {
   // Languages
-  "JavaScript": "ES6+ features, async/await, modern DOM manipulation",
-  "TypeScript": "Type-safe development with interfaces, generics & decorators",
-  "Python": "Backend scripting, data processing, AI/ML integrations",
-  "C++": "DSA problem solving, competitive programming, system-level code",
+  "C++": "Object-oriented programming, data structures, algorithms, STL, problem solving",
+  "Python": "Scripting, backend development, data processing, machine learning integrations",
+  "JavaScript": "Modern ES6+, asynchronous programming, frontend & full-stack development",
+  "SQL": "Relational schema design, complex joins, data manipulation, indexing",
+  "Java": "Object-oriented design, core programming concepts, software development",
   
   // Frontend
-  "React.js": "Component architecture, hooks, context API, state management",
-  "Vite": "Fast build tool with HMR for modern web development",
-  "Tailwind CSS": "Utility-first CSS for rapid, responsive UI development",
-  "Framer Motion": "Production-ready animations and gesture interactions",
+  "React.js": "Component architecture, hooks, state management, modern interactive UIs",
+  "Next.js": "Server-side rendering, App Router, full-stack React framework",
+  "HTML": "Semantic markup, accessibility, modern HTML5 web standards",
+  "CSS": "Modern layouts, responsive design, animations, CSS variables",
+  "Tailwind CSS": "Utility-first design system, responsive styles, modern aesthetics",
   
   // Backend
-  "Node.js": "Server-side JavaScript runtime for scalable applications",
-  "Express.js": "RESTful API development with middleware architecture",
-  "Prisma ORM": "Type-safe database access with migrations & queries",
-  "REST APIs": "Design and implementation of RESTful web services",
+  "Node.js": "Asynchronous JavaScript server runtime, event-driven architecture",
+  "Express.js": "RESTful API development, middleware, controllers, routes",
+  "REST APIs": "Resource modeling, HTTP methods, JSON payloads, clean endpoint design",
   
   // Databases
-  "PostgreSQL": "Relational database design, complex queries, indexing",
-  "MongoDB": "NoSQL document database for flexible data models",
-  "MySQL": "Relational database management & query optimization",
-  "Firebase": "Real-time database, authentication, cloud functions",
+  "MySQL": "Relational database management, querying, schema design, constraints",
+  "MongoDB": "NoSQL document store, JSON collections, flexible data modeling",
   
-  // DevOps
-  "AWS (EC2, S3, IAM)": "Cloud infrastructure, storage, and access management",
-  "Firebase Hosting": "Fast, secure hosting with CDN distribution",
-  "GitHub Actions": "CI/CD automation for build, test, and deployment",
-  "CI/CD Pipelines": "Automated workflows for continuous integration",
+  // AI / ML
+  "Machine Learning": "Supervised & unsupervised learning algorithms, model evaluation",
+  "Deep Learning": "Neural network architectures, training, optimization techniques",
+  "Self-Supervised Learning": "Representation learning without manual annotations",
+  "Computer Vision": "Image processing, feature extraction, visual recognition",
+  "SimCLR": "Simple framework for contrastive learning of visual representations",
+  "BYOL": "Bootstrap Your Own Latent representation learning",
   
-  // AI & Systems
-  "LLM Integration": "OpenRouter, OpenAI API integration for AI features",
-  "Prompt Optimization": "Engineering effective prompts for AI models",
-  "RAG Pipelines": "Retrieval-augmented generation for context-aware AI",
-  "Information Theory": "Entropy-based optimization algorithms",
+  // Core CS
+  "Data Structures & Algorithms": "Arrays, trees, graphs, sorting, searching, time & space complexity",
+  "Object-Oriented Programming": "Encapsulation, inheritance, polymorphism, abstraction, modular design",
+  "DBMS": "Relational algebra, normalization, ACID properties, transactions",
+  "Operating Systems": "Processes, threads, synchronization, memory management, scheduling",
+  "Computer Networks": "TCP/IP, HTTP/HTTPS, OSI model, routing, network protocols",
+  "Software Engineering": "SDLC, design patterns, testing, system architecture, Agile practices",
+  
+  // Tools & Platforms
+  "Git": "Version control, branching, rebasing, merge workflows, commit history",
+  "GitHub": "Collaborative development, pull requests, issue tracking, repositories",
+  "Vercel": "Frontend deployment, continuous integration, global edge delivery",
+  "Render": "Backend web services, database hosting, production deployment",
+  "VS Code": "Primary code editor, debugging, extensions, productive workspace",
+  
+  // Specialized Technologies
+  "Fabric.js": "Interactive canvas library for visual editing, object manipulation, rendering",
+  "Liveblocks": "Real-time presence, state synchronization, multiplayer collaborative tools",
+  "Unity": "Real-time 3D engine for interactive applications and spatial computing",
+  "Vuforia": "Augmented reality SDK for image recognition and ground plane tracking",
+  "ARCore": "Google augmented reality platform for environmental understanding",
 };
 
 const categories = [
-  { title: "Languages", items: ["JavaScript", "TypeScript", "Python", "C++"] },
-  { title: "Frontend", items: ["React.js", "Vite", "Tailwind CSS", "Framer Motion"] },
-  { title: "Backend", items: ["Node.js", "Express.js", "Prisma ORM", "REST APIs"] },
-  { title: "Databases", items: ["PostgreSQL", "MongoDB", "MySQL", "Firebase"] },
-  { title: "DevOps & Cloud", items: ["AWS (EC2, S3, IAM)", "Firebase Hosting", "GitHub Actions", "CI/CD Pipelines"] },
-  { title: "AI & Systems", items: ["LLM Integration", "Prompt Optimization", "RAG Pipelines", "Information Theory"] },
+  { title: "Languages", items: ["C++", "Python", "JavaScript", "SQL", "Java"] },
+  { title: "Frontend", items: ["React.js", "Next.js", "HTML", "CSS", "Tailwind CSS"] },
+  { title: "Backend", items: ["Node.js", "Express.js", "REST APIs"] },
+  { title: "Databases", items: ["MySQL", "MongoDB", "SQL"] },
+  { title: "AI / ML", items: ["Machine Learning", "Deep Learning", "Self-Supervised Learning", "Computer Vision", "SimCLR", "BYOL"] },
+  { title: "Core Computer Science", items: ["Data Structures & Algorithms", "Object-Oriented Programming", "DBMS", "Operating Systems", "Computer Networks", "Software Engineering"] },
+  { title: "Tools & Platforms", items: ["Git", "GitHub", "Vercel", "Render", "VS Code"] },
+  { title: "Specialized Technologies", items: ["Fabric.js", "Liveblocks", "Unity", "Vuforia", "ARCore"] },
 ];
 
 const SkillsSection = () => {

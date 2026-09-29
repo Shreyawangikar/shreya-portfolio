@@ -1,6 +1,6 @@
 """
-OpenRouter API Service for AI chat functionality.
-Handles communication with OpenRouter API using Mistral 7B model.
+AI Chat Service for Shreya Wangikar's Portfolio.
+Supports Google Gemini API (primary) with OpenRouter API fallback.
 """
 
 import os
@@ -9,238 +9,200 @@ from typing import List, Optional
 from dotenv import load_dotenv
 
 # Load environment variables
-load_dotenv()
+env_path = os.path.join(os.path.dirname(__file__), '..', '.env')
+if os.path.exists(env_path):
+    load_dotenv(env_path)
+else:
+    load_dotenv()
 
 
 class OpenRouterService:
     """
-    Service class for interacting with OpenRouter API.
-    Uses Liquid LFM 2.5 Instruct as the free AI model (good for chat).
+    Service class for interacting with Gemini and OpenRouter APIs.
     """
     
-    # OpenRouter API configuration
-    API_URL = "https://openrouter.ai/api/v1/chat/completions"
-    MODEL = "liquid/lfm-2.5-1.2b-instruct:free"
+    GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+    OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
+    OPENROUTER_FALLBACK_MODELS = [
+        "liquid/lfm-2.5-2.6b:free",
+        "google/gemma-4-26b-a4b-it:free",
+        "qwen/qwen3.8-27b:free"
+    ]
     
-    # System prompt for portfolio assistant
-    SYSTEM_PROMPT = """You are an AI assistant for Shreya Wangikar's personal portfolio website.
-Answer professionally, clearly, and confidently.
+    SYSTEM_PROMPT = """You are an AI assistant representing Shreya Wangikar on her personal developer portfolio website.
+Answer questions professionally, clearly, and concisely with technical depth.
 
-ABOUT SHREYA:
-Shreya Wangikar is a Full-Stack Developer and third-year B.E. Information Technology student (2023-2027) at Pune Institute of Computer Technology (PICT), Pune, with a CGPA of 8.8.
+ABOUT SHREYA WANGIKAR:
+- Final-year B.E. Information Technology student (2023–2027) at Pune Institute of Computer Technology (PICT), affiliated with Savitribai Phule Pune University.
+- CGPA: 8.53 / 10.0.
+- Contact: wangikarshreya@gmail.com | +91 89838 07663 | Pune, Maharashtra, India.
+- Profiles: GitHub (https://github.com/Shreyawangikar), LinkedIn (https://www.linkedin.com/in/shreya-wangikar).
 
-She specializes in:
-- Backend architecture
-- Full-stack system design
-- ERP-style lifecycle systems
-- Algorithmic problem solving
-- Applied AI & LLM integrations
+TARGET ROLES:
+Software Engineer, Software Development Engineer, Full Stack Developer, Frontend Developer, Backend Developer, AI/ML-oriented Software Engineer.
 
-She has solved 200+ DSA problems on LeetCode using C++.
+CORE SKILLS:
+- Languages: C++, Python, JavaScript, SQL, Java
+- Frontend: React.js, Next.js, HTML, CSS, Tailwind CSS
+- Backend: Node.js, Express.js, REST APIs
+- Databases: MySQL, MongoDB, SQL
+- Core CS: Data Structures & Algorithms, Object-Oriented Programming, DBMS, Operating Systems, Computer Networks, Software Engineering
+- AI / ML: Machine Learning, Deep Learning, Self-Supervised Learning (SimCLR, BYOL), Computer Vision
+- Tools & Specialized: Fabric.js, Liveblocks, Unity, Vuforia, ARCore, Git, GitHub, Vercel, Render, VS Code
 
----
+EDUCATION:
+- Pune Institute of Computer Technology (PICT): B.E. Information Technology (2023–2027), Savitribai Phule Pune University — CGPA: 8.53
 
-MAJOR PROJECTS:
+FEATURED PROJECTS:
+1. Collaborative Design Platform
+   - Tech Stack: Next.js 14, TypeScript, Fabric.js, Liveblocks, Tailwind CSS
+   - Real-time collaborative design platform enabling users to create, edit, and collaborate on designs in a shared workspace.
+   - Highlights: Canvas-based editing with Fabric.js, multiplayer presence & state synchronization via Liveblocks, responsive UI.
 
-1. Subscription Management System (ERP)
-- Built during Odoo x SNS Hackathon 2026
-- Production-style subscription lifecycle engine
-- Role-based access control (Admin, Internal User, Portal User)
-- Recurring billing automation
-- Auto invoice generation & payment tracking
-- Tax & discount rule engines
-- PostgreSQL + Prisma ORM
-- MVC architecture
-- Selected as Hackathon Finalist (3-4 architecture review rounds)
+2. TaskForge — Multithreaded Job Scheduler
+   - Tech Stack: C++, STL, CMake, Multithreading
+   - Multithreaded C++ job scheduling engine with worker thread pools, priority execution, and DAG dependency resolution with cycle detection.
 
-2. Career Tracking Platform (Mastercard Code for Change 2.0)
-- AI-powered alumni career tracking system
-- Built in 36-hour hackathon
-- Dashboard + recommendation system
-- Team of 8
-- Finalist
+3. JanNivaran — Civic Issue Reporting & Resolution Platform
+   - Tech Stack: React, Node.js, Express.js, MongoDB, REST APIs, Google Gemini, Google Maps
+   - Full-stack civic reporting platform with geotagged complaint workflows, Google Gemini AI priority classification, and role-based workflows.
 
-3. GlobeTrotter (Travel Planning Platform)
-- Multi-city trip planner
-- Budget tracking & interactive calendar
-- Normalized relational schema
-- React + Node.js + MySQL
+4. Career Tracking Platform
+   - Tech Stack: React, Node.js, MongoDB, REST APIs, Tailwind CSS
+   - Hackathon Finalist at Mastercard Code for Change 2.0 (2025). AI-driven alumni career tracking and intelligent recommendations.
 
-4. SkillSprint (Career Acceleration SaaS)
-- Kanban boards
-- Real-time tracking
-- PostgreSQL + Prisma
-- Authentication & public portfolio support
+5. Subscription Management System (ERP)
+   - Tech Stack: JavaScript, Node.js, Express, React, PostgreSQL, Tailwind CSS
+   - Hackathon Finalist at Odoo x SNS Coimbatore Hackathon 2026. Automated subscription lifecycle (Draft to Active) and recurring invoice generation.
 
-5. WordleX (Entropy-Based Wordle Solver)
-- Uses information theory (entropy maximization)
-- Optimized search algorithm
-- Firebase deployment
-- CI/CD with GitHub Actions
-- Interactive visualizations
+6. AR Image & Surface Tracking Experience
+   - Tech Stack: Unity, Vuforia, C#, ARCore
+   - Immersive augmented reality application implementing Image Targets and Ground Plane surface detection.
 
----
+7. Self-Supervised Visual Representation Learning
+   - Tech Stack: Python, Deep Learning, Computer Vision, SimCLR, BYOL
+   - Academic research exploring contrastive representation learning without manual labels.
 
-TECH STACK:
-
-Languages:
-C, C++, Python, JavaScript, TypeScript
-
-Frontend:
-React.js, Vite, TailwindCSS, Framer Motion
-
-Backend:
-Node.js, Express.js, Prisma ORM
-
-Databases:
-PostgreSQL, MySQL, MongoDB
-
-Cloud & DevOps:
-AWS (EC2, S3, IAM fundamentals)
-Firebase Hosting
-GitHub Actions CI/CD
-
-AI / Systems:
-Prompt Engineering
-LLM integration
-RAG pipelines (foundational)
-Information theory-based optimization
-
----
-CERTIFICATIONS:
-
-AWS Cloud Fundamentals Bootcamp: 
-Completed cloud fundamentals training via AWS Cloud Club at PICT. 
-Hands-on exposure to EC2, S3, IAM, cloud security basics, and deployment concepts.
-
-AR/VR Bootcamp — Unity & Vuforia (2025): 
-Completed a 3-day immersive bootcamp organized by PICT IT Department in collaboration with CDAC Pune. Worked with Image Target, Multi-Image Target, and Ground Plane technologies
----
-
-HACKATHONS:
-- Finalist: Odoo x SNS Hackathon 2026
-- Finalist: Mastercard Code for Change 2.0 (2025)
-
----
-
-Answer concisely but with technical depth.
-If asked about projects, explain architecture and impact.
-If asked about skills, categorize clearly.
-Do not invent information."""
+Guidelines:
+- Answer concisely, politely, and highlighting Shreya's concrete technical skills and achievements.
+- If asked about hiring or contacting Shreya, provide her email (wangikarshreya@gmail.com) and phone (+91 89838 07663).
+- Do not hallucinate qualifications or professional experience not listed above."""
 
     def __init__(self):
-        """Initialize the OpenRouter service with API key."""
-        self.api_key = os.getenv('OPENROUTER_API_KEY')
-        if not self.api_key:
-            raise ValueError("OPENROUTER_API_KEY environment variable is required")
-    
-    def _build_messages(self, conversation_history: List[dict]) -> List[dict]:
-        """
-        Build the messages array for the API request.
-        Includes system prompt and conversation history.
+        """Initialize service with available API keys."""
+        self.gemini_key = os.getenv('GEMINI_API_KEY')
+        self.openrouter_key = os.getenv('OPENROUTER_API_KEY')
         
-        Args:
-            conversation_history: List of message dicts with 'role' and 'content'
+        if not self.gemini_key and not self.openrouter_key:
+            raise ValueError("Either GEMINI_API_KEY or OPENROUTER_API_KEY must be provided")
+
+    def _call_gemini(self, conversation_history: List[dict]) -> str:
+        """Call Google Gemini API."""
+        if not self.gemini_key:
+            raise ValueError("GEMINI_API_KEY not configured")
+
+        contents = []
+        for msg in conversation_history[-5:]:
+            role = "user" if msg.get("role") == "user" else "model"
+            content = msg.get("content", "")
+            contents.append({"role": role, "parts": [{"text": content}]})
+
+        payload = {
+            "contents": contents,
+            "systemInstruction": {
+                "parts": [{"text": self.SYSTEM_PROMPT}]
+            },
+            "generationConfig": {
+                "temperature": 0.7,
+                "maxOutputTokens": 600,
+            }
+        }
+
+        url = f"{self.GEMINI_API_URL}?key={self.gemini_key}"
+        response = requests.post(url, json=payload, timeout=20)
+        response.raise_for_status()
+        data = response.json()
         
-        Returns:
-            Complete messages array for API request
-        """
-        messages = [
-            {"role": "system", "content": self.SYSTEM_PROMPT}
-        ]
-        
-        # Add conversation history (limited to last 5 messages)
+        candidates = data.get("candidates", [])
+        if candidates and "content" in candidates[0]:
+            parts = candidates[0]["content"].get("parts", [])
+            if parts and "text" in parts[0]:
+                return parts[0]["text"].strip()
+                
+        raise ValueError("Invalid format from Gemini API")
+
+    def _call_openrouter(self, conversation_history: List[dict]) -> str:
+        """Call OpenRouter API with fallbacks."""
+        if not self.openrouter_key:
+            raise ValueError("OPENROUTER_API_KEY not configured")
+
+        headers = {
+            "Authorization": f"Bearer {self.openrouter_key}",
+            "Content-Type": "application/json",
+            "HTTP-Referer": os.getenv('FRONTEND_URL', 'http://localhost:8080'),
+            "X-Title": "Shreya Portfolio Chatbot"
+        }
+
+        messages = [{"role": "system", "content": self.SYSTEM_PROMPT}]
         for msg in conversation_history[-5:]:
             messages.append({
                 "role": msg.get("role", "user"),
                 "content": msg.get("content", "")
             })
-        
-        return messages
-    
+
+        for model in self.OPENROUTER_FALLBACK_MODELS:
+            try:
+                payload = {
+                    "model": model,
+                    "messages": messages,
+                    "max_tokens": 500,
+                    "temperature": 0.7
+                }
+                response = requests.post(
+                    self.OPENROUTER_API_URL,
+                    headers=headers,
+                    json=payload,
+                    timeout=20
+                )
+                if response.status_code == 200:
+                    data = response.json()
+                    if "choices" in data and len(data["choices"]) > 0:
+                        return data["choices"][0]["message"]["content"].strip()
+            except Exception as e:
+                print(f"OpenRouter model {model} failed: {e}")
+                continue
+
+        raise Exception("All OpenRouter models failed")
+
     def get_chat_response(self, conversation_history: List[dict]) -> str:
         """
-        Get AI response from OpenRouter API.
-        
-        Args:
-            conversation_history: List of previous messages for context
-        
-        Returns:
-            The AI assistant's response text
-        
-        Raises:
-            Exception: If API request fails
+        Get AI response from Gemini, falling back to OpenRouter.
         """
-        headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "Content-Type": "application/json",
-            "HTTP-Referer": os.getenv('FRONTEND_URL', 'http://localhost:8080'),
-            "X-Title": "Shreya's Portfolio Chatbot"
-        }
-        
-        payload = {
-            "model": self.MODEL,
-            "messages": self._build_messages(conversation_history),
-            "max_tokens": 500,
-            "temperature": 0.7
-        }
-        
-        try:
-            response = requests.post(
-                self.API_URL,
-                headers=headers,
-                json=payload,
-                timeout=30
-            )
-            response.raise_for_status()
-            
-            data = response.json()
-            
-            # Extract response text from API response
-            if "choices" in data and len(data["choices"]) > 0:
-                return data["choices"][0]["message"]["content"]
-            else:
-                raise ValueError("No response content in API response")
-                
-        except requests.exceptions.Timeout:
-            raise Exception("API request timed out. Please try again.")
-        except requests.exceptions.HTTPError as e:
-            if response.status_code == 401:
-                raise Exception("Invalid API key. Please check configuration.")
-            elif response.status_code == 429:
-                raise Exception("Rate limit exceeded. Please wait and try again.")
-            else:
-                raise Exception(f"API error: {e}")
-        except requests.exceptions.RequestException as e:
-            raise Exception(f"Network error: {e}")
-    
-    def validate_api_key(self) -> bool:
-        """
-        Validate that the API key is working.
-        Makes a minimal test request to verify authentication.
-        
-        Returns:
-            True if API key is valid, False otherwise
-        """
-        try:
-            test_messages = [{"role": "user", "content": "Hi"}]
-            self.get_chat_response(test_messages)
-            return True
-        except Exception:
-            return False
+        # Try Gemini first if key exists
+        if self.gemini_key:
+            try:
+                return self._call_gemini(conversation_history)
+            except Exception as gemini_err:
+                print(f"Gemini API attempt failed: {gemini_err}. Trying OpenRouter fallback...")
+
+        # Fallback to OpenRouter
+        if self.openrouter_key:
+            try:
+                return self._call_openrouter(conversation_history)
+            except Exception as router_err:
+                print(f"OpenRouter fallback failed: {router_err}")
+
+        # If both fail or only Gemini was available
+        if self.gemini_key:
+            return self._call_gemini(conversation_history)
+
+        raise Exception("Failed to get response from AI providers")
 
 
-# Create singleton instance for easy import
 _service_instance: Optional[OpenRouterService] = None
 
 
 def get_openrouter_service() -> OpenRouterService:
-    """
-    Get or create the OpenRouter service singleton.
-    
-    Returns:
-        OpenRouterService instance
-    """
     global _service_instance
     if _service_instance is None:
         _service_instance = OpenRouterService()

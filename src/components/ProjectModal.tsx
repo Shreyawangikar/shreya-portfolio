@@ -4,10 +4,12 @@ import { X, Github, ExternalLink, ArrowRight } from "lucide-react";
 export interface ProjectDetails {
   title: string;
   tag: string;
+  category?: "Full Stack" | "AI/ML" | "AR/VR" | "Academic" | "Other";
   description: string;
   tech: string[];
-  github: string;
+  github?: string;
   live?: string;
+  highlights?: string[];
   icon: React.ComponentType<{ className?: string; size?: string | number }>;
   // Extended details for modal
   problem?: string;
@@ -181,33 +183,37 @@ const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) => {
                   )}
 
                   {/* Links */}
-                  <section className="bg-secondary/30 rounded-2xl p-5">
-                    <h3 className="text-xs font-mono text-primary uppercase tracking-wider mb-4">Links</h3>
-                    <div className="space-y-3">
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-3 p-3 rounded-xl bg-muted hover:bg-muted/80 transition-colors group"
-                      >
-                        <Github size={18} className="text-muted-foreground group-hover:text-foreground" />
-                        <span className="text-sm text-foreground/80 group-hover:text-foreground">View Source Code</span>
-                        <ExternalLink size={14} className="ml-auto text-muted-foreground" />
-                      </a>
-                      {project.live && (
-                        <a
-                          href={project.live}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-3 p-3 rounded-xl bg-primary/10 hover:bg-primary/20 transition-colors group"
-                        >
-                          <ExternalLink size={18} className="text-primary" />
-                          <span className="text-sm text-foreground/80 group-hover:text-foreground">Live Demo</span>
-                          <ArrowRight size={14} className="ml-auto text-primary" />
-                        </a>
-                      )}
-                    </div>
-                  </section>
+                  {(project.github || project.live) && (
+                    <section className="bg-secondary/30 rounded-2xl p-5">
+                      <h3 className="text-xs font-mono text-primary uppercase tracking-wider mb-4">Links</h3>
+                      <div className="space-y-3">
+                        {project.github && (
+                          <a
+                            href={project.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-3 p-3 rounded-xl bg-muted hover:bg-muted/80 transition-colors group"
+                          >
+                            <Github size={18} className="text-muted-foreground group-hover:text-foreground" />
+                            <span className="text-sm text-foreground/80 group-hover:text-foreground">View Source Code</span>
+                            <ExternalLink size={14} className="ml-auto text-muted-foreground" />
+                          </a>
+                        )}
+                        {project.live && (
+                          <a
+                            href={project.live}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-3 p-3 rounded-xl bg-primary/10 hover:bg-primary/20 transition-colors group"
+                          >
+                            <ExternalLink size={18} className="text-primary" />
+                            <span className="text-sm text-foreground/80 group-hover:text-foreground">Live Demo</span>
+                            <ArrowRight size={14} className="ml-auto text-primary" />
+                          </a>
+                        )}
+                      </div>
+                    </section>
+                  )}
 
                   {/* Screenshots placeholder */}
                   {project.screenshots && project.screenshots.length > 0 && (

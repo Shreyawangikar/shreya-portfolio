@@ -42,42 +42,45 @@ const AboutSection = () => {
               transition={{ delay: 0.15, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="text-[32px] font-semibold tracking-tight mb-6 leading-tight"
             >
-              From algorithms
+              Engineering practical solutions
               <br />
-              <span className="text-muted-foreground">to production systems.</span>
+              <span className="text-muted-foreground">with thoughtful design.</span>
             </motion.h2>
-            <motion.p
-              {...fadeUp}
-              transition={{ delay: 0.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="text-muted-foreground text-base leading-relaxed mb-4"
-            >
-              I design and ship production-ready full-stack systems with strong backend architecture and algorithmic foundations. My work spans ERP lifecycle engines, real-time SaaS platforms, entropy-driven search systems, and cloud-deployed applications. 
-              <br /><br />
-              Proven track record: 2x hackathon finalist (Odoo, Mastercard), shipped production apps on AWS & Firebase, and 200+ DSA problems solved demonstrating deep algorithmic rigor.
-            </motion.p>
-            <motion.p
-              {...fadeUp}
-              transition={{ delay: 0.25, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="text-muted-foreground text-sm leading-relaxed mb-6"
-            >
-              B.E. Information Technology (2023–2027) · CGPA 8.8
-            </motion.p>
-
             <motion.div
               {...fadeUp}
-              transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="flex gap-6"
+              transition={{ delay: 0.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="text-muted-foreground text-sm sm:text-base leading-relaxed mb-6 space-y-3"
             >
-              {[
-                { num: "200+", label: "DSA Problems" },
-                { num: "5+", label: "Production Apps" },
-                { num: "2x", label: "Hackathon Finalist" },
-              ].map((stat) => (
-                <div key={stat.label}>
-                  <p className="text-2xl font-semibold text-foreground">{stat.num}</p>
-                  <p className="text-xs text-muted-foreground mt-1">{stat.label}</p>
+              <p>
+                I'm Shreya Wangikar, a final-year Information Technology Engineering student at Pune Institute of Computer Technology (PICT), affiliated with Savitribai Phule Pune University.
+              </p>
+              <p>
+                I enjoy solving problems with code and building applications that combine thoughtful user experiences with practical engineering. My interests span full-stack development, data structures and algorithms, databases, and AI/ML.
+              </p>
+              <p>
+                I've worked with technologies including C++, Python, JavaScript, React, Next.js, Node.js, SQL, and modern web development tools. I've also explored AR/VR development and self-supervised learning through academic and personal projects.
+              </p>
+              <p>
+                Beyond coursework, I've participated in hackathons such as Mastercard Code for Change 2025 and continuously work on strengthening my problem-solving and software engineering skills. I'm currently looking for opportunities where I can contribute as a software engineer while continuing to learn and build production-quality systems.
+              </p>
+            </motion.div>
+
+            {/* Education Timeline */}
+            <motion.div
+              {...fadeUp}
+              transition={{ delay: 0.25, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="space-y-2 mb-6 p-4 rounded-2xl bg-secondary/40 border border-border/50 text-xs"
+            >
+              <div className="flex justify-between items-start">
+                <div>
+                  <p className="font-semibold text-foreground">Pune Institute of Computer Technology (PICT)</p>
+                  <p className="text-muted-foreground">B.E. Information Technology · Savitribai Phule Pune University</p>
                 </div>
-              ))}
+                <div className="text-right">
+                  <span className="font-mono text-primary font-medium">CGPA: 8.53</span>
+                  <p className="text-muted-foreground">2023–2027</p>
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>

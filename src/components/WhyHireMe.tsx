@@ -3,14 +3,13 @@ import { useRef } from "react";
 import { CheckCircle2 } from "lucide-react";
 
 const highlights = [
-  "Built 5+ production-grade full-stack systems (ERP, SaaS, AI)",
-  "Strong backend architecture — Node.js, Express, Prisma, PostgreSQL",
-  "200+ DSA problems solved on LeetCode",
-  "2x Hackathon Finalist (Odoo, Mastercard)",
-  "CI/CD pipelines with GitHub Actions, deployed on AWS & Firebase",
-  "Applied AI: LLM integration, RAG pipelines, prompt optimization",
-  "System-level thinking — lifecycle engines, RBAC, schema design",
-  "Rapid execution: shipped complex systems in 36–48 hour hackathons",
+  "Solid Computer Science foundations: C++, Python, JavaScript, OOP, DSA, OS, DBMS & Computer Networks",
+  "Full-stack web applications & layered REST architecture (React, Next.js, Node.js, Express, MongoDB, MySQL)",
+  "Real-time collaborative systems & canvas-based UI engineering (Fabric.js, Liveblocks, TypeScript)",
+  "Multithreaded systems & concurrent programming (TaskForge C++ job scheduler with worker pools & DAGs)",
+  "Hackathon Finalist: Mastercard Code for Change 2.0 (2025) & Odoo x SNS Coimbatore (2026)",
+  "Exploration of AI/ML, self-supervised representation learning (SimCLR, BYOL) & Gemini API integrations",
+  "Academic excellence: Final-year B.E. IT at PICT Pune with an 8.53 CGPA",
 ];
 
 const WhyHireMe = () => {

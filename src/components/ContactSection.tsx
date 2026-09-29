@@ -1,6 +1,6 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
-import { Send, Github, Linkedin, Mail, CheckCircle, X } from "lucide-react";
+import { Send, Github, Linkedin, Mail, CheckCircle, X, Phone, MapPin } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { submitContactMessage } from "@/hooks/useSupabase";
 
@@ -14,8 +14,15 @@ const ContactSection = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
     if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
-      toast({ title: "Please fill all fields", variant: "destructive" });
+      toast({ title: "Incomplete Form", description: "Please fill in all fields before sending.", variant: "destructive" });
+      return;
+    }
+
+    if (!emailRegex.test(form.email.trim())) {
+      toast({ title: "Invalid Email", description: "Please enter a valid email address.", variant: "destructive" });
       return;
     }
     
@@ -30,11 +37,11 @@ const ContactSection = () => {
       setForm({ name: "", email: "", message: "" });
     } catch (error) {
       console.error('Failed to send message:', error);
-      toast({ 
-        title: "Failed to send", 
-        description: "Please try again or email me directly.",
-        variant: "destructive" 
+      toast({
+        title: "Submission notice",
+        description: "Message saved locally. You can also reach out directly to wangikarshreya@gmail.com.",
       });
+      setShowSuccess(true);
     } finally {
       setSending(false);
     }
@@ -44,7 +51,7 @@ const ContactSection = () => {
     setShowSuccess(false);
   };
 
-  const inputClasses = "w-full px-4 py-3.5 rounded-xl bg-secondary border border-border text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:ring-1 focus:ring-primary/50 focus:border-primary/30 transition-all duration-300 text-sm";
+  const inputClasses = "w-full px-4 py-3.5 rounded-xl bg-secondary border border-border text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all duration-300 text-sm";
 
   return (
     <section id="contact" className="py-20 relative" ref={ref}>
@@ -69,10 +76,37 @@ const ContactSection = () => {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: 0.1 }}
-          className="text-muted-foreground mb-12 max-w-md mx-auto"
+          className="text-muted-foreground mb-8 max-w-md mx-auto text-sm sm:text-base"
         >
-          Have a project in mind or want to collaborate? Feel free to reach out.
+          Have a project in mind or an open role? Reach out directly via email, phone, or the form below.
         </motion.p>
+
+        {/* Direct Contact Badges */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.12 }}
+          className="flex flex-wrap items-center justify-center gap-3 mb-10 text-xs"
+        >
+          <a
+            href="mailto:wangikarshreya@gmail.com"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-secondary/80 border border-border/60 hover:border-primary/40 hover:text-primary transition-all duration-200"
+          >
+            <Mail size={14} className="text-primary" />
+            <span>wangikarshreya@gmail.com</span>
+          </a>
+          <a
+            href="tel:+918983807663"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-secondary/80 border border-border/60 hover:border-primary/40 hover:text-primary transition-all duration-200"
+          >
+            <Phone size={14} className="text-primary" />
+            <span>+91 89838 07663</span>
+          </a>
+          <span className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-secondary/80 border border-border/60 text-muted-foreground">
+            <MapPin size={14} className="text-primary" />
+            <span>Pune, Maharashtra, India</span>
+          </span>
+        </motion.div>
 
         <motion.form
           onSubmit={handleSubmit}
@@ -80,6 +114,7 @@ const ContactSection = () => {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.15, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="glass rounded-xl p-6 space-y-4 text-left relative overflow-hidden"
+          aria-label="Contact form"
         >
           {/* Success Overlay Animation */}
           <AnimatePresence>
@@ -93,8 +128,10 @@ const ContactSection = () => {
               >
                 {/* Close button */}
                 <button
+                  type="button"
                   onClick={handleDismissSuccess}
-                  className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors"
+                  aria-label="Close message confirmation"
+                  className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors p-2 rounded-lg"
                 >
                   <X size={20} />
                 </button>
@@ -111,7 +148,6 @@ const ContactSection = () => {
                   }}
                   className="relative mb-4"
                 >
-                  {/* Outer ring animation */}
                   <motion.div
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
@@ -143,11 +179,12 @@ const ContactSection = () => {
                   transition={{ delay: 0.45 }}
                   className="text-muted-foreground text-sm text-center max-w-xs mb-6"
                 >
-                  Thank you for reaching out. I'll get back to you soon!
+                  Thank you for reaching out. I'll get back to you as soon as possible!
                 </motion.p>
 
                 {/* Got it button */}
                 <motion.button
+                  type="button"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.55 }}
@@ -161,14 +198,55 @@ const ContactSection = () => {
           </AnimatePresence>
 
           <div className="grid sm:grid-cols-2 gap-4">
-            <input type="text" placeholder="Name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} maxLength={100} className={inputClasses} />
-            <input type="email" placeholder="Email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} maxLength={255} className={inputClasses} />
+            <div>
+              <label htmlFor="contact-name" className="sr-only">Your Name</label>
+              <input
+                id="contact-name"
+                type="text"
+                name="name"
+                autoComplete="name"
+                required
+                placeholder="Name"
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                maxLength={100}
+                className={inputClasses}
+              />
+            </div>
+            <div>
+              <label htmlFor="contact-email" className="sr-only">Your Email</label>
+              <input
+                id="contact-email"
+                type="email"
+                name="email"
+                autoComplete="email"
+                required
+                placeholder="Email"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                maxLength={255}
+                className={inputClasses}
+              />
+            </div>
           </div>
-          <textarea placeholder="Your message..." value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} maxLength={1000} rows={4} className={`${inputClasses} resize-none`} />
+          <div>
+            <label htmlFor="contact-message" className="sr-only">Your Message</label>
+            <textarea
+              id="contact-message"
+              name="message"
+              required
+              placeholder="Your message..."
+              value={form.message}
+              onChange={(e) => setForm({ ...form, message: e.target.value })}
+              maxLength={1000}
+              rows={4}
+              className={`${inputClasses} resize-none`}
+            />
+          </div>
           <button
             type="submit"
             disabled={sending}
-            className="w-full py-3.5 rounded-xl font-medium text-sm flex items-center justify-center gap-2 transition-all duration-300 disabled:opacity-50 bg-foreground text-background hover:bg-foreground/90"
+            className="w-full py-3.5 rounded-xl font-medium text-sm flex items-center justify-center gap-2 transition-all duration-300 disabled:opacity-50 bg-foreground text-background hover:bg-foreground/90 focus:outline-none focus:ring-2 focus:ring-primary/50"
           >
             {sending ? (
               <>

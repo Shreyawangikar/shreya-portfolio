@@ -20,7 +20,7 @@ from collections import defaultdict
 from dotenv import load_dotenv
 
 # Import modular components
-from database import init_database, save_chat_log, get_chat_stats, get_recent_logs
+from database import init_database, save_chat_log, get_chat_stats, get_recent_logs, save_contact_message, get_contact_messages
 from services import get_openrouter_service
 from models import ChatRequest, ChatResponse
 
@@ -33,19 +33,14 @@ load_dotenv()
 
 app = Flask(__name__)
 
-# Configure CORS for frontend
-CORS(
-    app,
-    origins=["https://shreya-portfolio-azure.vercel.app"],
-    methods=["GET", "POST", "OPTIONS"],
-    allow_headers=["Content-Type", "Authorization"],
-    supports_credentials=False
-)
+# Configure CORS for all origins in development and production
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.after_request
 def add_cors_headers(response):
-    """Ensure CORS headers are on every response (belt-and-suspenders)."""
-    response.headers["Access-Control-Allow-Origin"] = "https://shreya-portfolio-azure.vercel.app"
+    """Ensure CORS headers are on every response."""
+    origin = request.headers.get("Origin", "*")
+    response.headers["Access-Control-Allow-Origin"] = origin
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
     return response
@@ -280,6 +275,93 @@ def logs():
     except Exception as e:
         print(f"Logs error: {e}")
         return jsonify({"error": "Failed to retrieve logs"}), 500
+
+
+@app.route("/api/contact", methods=["POST", "OPTIONS"])
+def contact():
+    """
+    Handle contact form submissions and send notification via Resend.
+    """
+    if request.method == "OPTIONS":
+        return "", 200
+
+    try:
+        data = request.json or {}
+        name = (data.get("name") or "").strip()
+        email = (data.get("email") or "").strip()
+        message = (data.get("message") or "").strip()
+
+        if not name or not email or not message:
+            return jsonify({
+                "error": "Please provide your name, email, and message.",
+                "success": False
+            }), 400
+
+        client_ip = get_client_ip()
+        msg_id = save_contact_message(name, email, message, client_ip)
+
+        print(f"[Contact] Received message #{msg_id} from {name} ({email}): {message[:50]}...")
+
+        # Send email notification via Resend if API key is present
+        resend_key = os.getenv("RESEND_API_KEY")
+        if resend_key:
+            try:
+                import requests as req
+                # Send email to Shreya
+                email_res = req.post(
+                    "https://api.resend.com/emails",
+                    headers={
+                        "Authorization": f"Bearer {resend_key}",
+                        "Content-Type": "application/json"
+                    },
+                    json={
+                        "from": "onboarding@resend.dev",
+                        "to": ["wangikarshreya@gmail.com"],
+                        "reply_to": email,
+                        "subject": f"Portfolio Message from {name}",
+                        "html": f"""
+                            <div style="font-family: Arial, sans-serif; background-color: #f9fafb; padding: 20px;">
+                              <div style="background-color: white; padding: 24px; border-radius: 8px; max-width: 600px; margin: 0 auto; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                <h2 style="color: #111827; margin-top: 0;">New Portfolio Message</h2>
+                                <p><strong style="color: #374151;">Name:</strong> {name}</p>
+                                <p><strong style="color: #374151;">Email:</strong> <a href="mailto:{email}">{email}</a></p>
+                                <p><strong style="color: #374151;">Message:</strong></p>
+                                <div style="background: #f3f4f6; padding: 16px; border-radius: 6px; color: #1f2937; line-height: 1.6; white-space: pre-wrap;">{message}</div>
+                              </div>
+                            </div>
+                        """
+                    },
+                    timeout=10
+                )
+                print(f"[Contact] Resend status: {email_res.status_code}")
+            except Exception as resend_err:
+                print(f"[Contact] Resend delivery warning: {resend_err}")
+
+        return jsonify({
+            "success": True,
+            "message": "Thank you for reaching out! Your message has been received.",
+            "id": msg_id
+        }), 200
+
+    except Exception as e:
+        print(f"Contact error: {e}")
+        return jsonify({
+            "error": "Failed to process contact message.",
+            "success": False
+        }), 500
+
+
+@app.route("/api/contact/messages", methods=["GET"])
+def contact_messages_list():
+    """
+    Get recent contact messages for review.
+    """
+    try:
+        limit = request.args.get('limit', 50, type=int)
+        messages = get_contact_messages(limit=limit)
+        return jsonify({"messages": messages, "count": len(messages)}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 # ============================================================

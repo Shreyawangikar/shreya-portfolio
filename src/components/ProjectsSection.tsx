@@ -1,6 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
-import { ExternalLink, Github, Globe, Zap, Brain, CreditCard, Sparkles, Layout } from "lucide-react";
+import { ExternalLink, Github, Globe, Zap, Brain, CreditCard, Sparkles, Layout, Cpu, ShieldCheck } from "lucide-react";
 import ProjectModal, { ProjectDetails } from "./ProjectModal";
 import { useTheme } from "../contexts/ThemeContext";
 import {
@@ -84,9 +84,21 @@ const ProjectCard = ({
           </h3>
 
           {/* Description */}
-          <p className="text-muted-foreground text-sm leading-relaxed mb-4 line-clamp-3 flex-1">
+          <p className="text-muted-foreground text-sm leading-relaxed mb-3 line-clamp-3">
             {project.description}
           </p>
+
+          {/* Key Technical Highlights if available */}
+          {project.highlights && project.highlights.length > 0 && (
+            <div className="mb-3 space-y-1">
+              {project.highlights.slice(0, 2).map((h, i) => (
+                <div key={i} className="flex items-center gap-1.5 text-xs text-foreground/80">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/70 shrink-0" />
+                  <span className="truncate">{h}</span>
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* Tech tags */}
           <div className="flex flex-wrap gap-1.5 mb-4">
@@ -105,32 +117,37 @@ const ProjectCard = ({
             )}
           </div>
 
-          {/* Links */}
-          <div className="flex gap-2 mt-auto">
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
-              className="p-2 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-primary/30 transition-colors duration-200"
-            >
-              <Github size={14} />
-            </a>
+          {/* Links — Only show valid buttons */}
+          <div className="flex items-center gap-2 mt-auto pt-2 border-t border-border/40">
+            {project.github && (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-border text-xs text-muted-foreground hover:text-foreground hover:border-primary/30 transition-colors"
+                title="View GitHub Repository"
+              >
+                <Github size={13} />
+                <span>Code</span>
+              </a>
+            )}
             {project.live && (
               <a
                 href={project.live}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="p-2 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-primary/30 transition-colors duration-200"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-primary/10 text-primary text-xs font-medium hover:bg-primary/20 transition-colors"
+                title="View Live Demo"
               >
-                <ExternalLink size={14} />
+                <ExternalLink size={13} />
+                <span>Live Demo</span>
               </a>
             )}
-          </div>
-
-          <div className="mt-3 text-xs text-muted-foreground/50 opacity-0 group-hover:opacity-100 transition-opacity">
-            Click to view details
+            <span className="ml-auto text-[11px] text-muted-foreground/60 group-hover:text-primary transition-colors">
+              Details →
+            </span>
           </div>
         </div>
       </ParticleCard>
@@ -140,10 +157,111 @@ const ProjectCard = ({
 
 const projects: ProjectDetails[] = [
   {
+    title: "Collaborative Design Platform",
+    tag: "Next.js / Real-time",
+    category: "Full Stack",
+    description: "A real-time collaborative design platform inspired by modern visual design tools, enabling users to create, edit and collaborate on designs within a shared workspace.",
+    tech: ["Next.js 14", "TypeScript", "Fabric.js", "Liveblocks", "Tailwind CSS"],
+    highlights: [
+      "Real-time multiplayer collaboration with Liveblocks",
+      "Interactive canvas-based editing with Fabric.js",
+      "Collaborative state synchronization across active users",
+      "Responsive UI & shared workspace canvas"
+    ],
+    icon: Sparkles,
+    github: "https://github.com/Shreyawangikar",
+    problem: "Modern visual creators require frictionless real-time multiplayer collaboration directly in the browser without cumbersome file exports or desynchronized editing conflicts.",
+    solution: "Built a high-performance canvas editing platform combining Fabric.js for 2D object manipulation and Liveblocks for low-latency CRDT-based state synchronization and live cursor presence.",
+    features: [
+      "Real-time collaboration with multiplayer presence",
+      "Canvas-based editing (shapes, text, freehand drawing, images)",
+      "Design elements management & layer organization",
+      "Collaborative state synchronization",
+      "Shared workspace for concurrent team workflows",
+      "Responsive UI optimized for modern screens"
+    ],
+    architecture: "Next.js 14 App Router → Fabric.js Canvas Engine → Liveblocks WebSocket Real-Time Infrastructure → Tailwind CSS Component Layer",
+    achievements: [
+      "Featured production-grade collaboration architecture",
+      "Sub-50ms collaborative state sync",
+      "Modular canvas toolset"
+    ],
+    duration: "Full Stack Project",
+    role: "Full Stack Engineer"
+  },
+  {
+    title: "TaskForge — Multithreaded Job Scheduler",
+    tag: "C++ / Systems",
+    category: "Academic",
+    description: "Multithreaded C++ job scheduling engine with worker thread pools, priority-based execution, dependency-aware DAG scheduling, and thread-safe task processing.",
+    tech: ["C++", "STL", "CMake", "Multithreading", "Mutexes", "Condition Variables"],
+    highlights: [
+      "Thread pool with priority-based task dispatching",
+      "DAG dependency resolution with cycle detection"
+    ],
+    icon: Cpu,
+    github: "https://github.com/Shreyawangikar",
+    problem: "Concurrent workloads with complex inter-task dependencies risk deadlocks, data races, and thread starvation without robust synchronization and lifecycle controls.",
+    solution: "Engineered an object-oriented C++ job scheduler with thread pools, synchronization primitives (mutexes, condition variables), dependency resolution via DAG cycle detection, and pluggable scheduling strategies.",
+    features: [
+      "Worker thread pool architecture for concurrent execution",
+      "Priority-based task queue with dynamic scheduling",
+      "Dependency-aware execution graph with topological sorting",
+      "Cycle detection algorithm preventing deadlock in task pipelines",
+      "Thread-safe task queues with mutexes and condition variables",
+      "Failure retries and pluggable scheduling strategy patterns using modern STL"
+    ],
+    architecture: "Worker Thread Pool ⇄ Priority Queue ⇄ Task Dispatcher ⇄ Directed Acyclic Graph (DAG) with Cycle Detection ⇄ Mutex/Condition Variable Synchronization",
+    achievements: [
+      "Thread-safe concurrent execution with zero race conditions",
+      "Modular design with pluggable scheduling strategies",
+      "CMake build automation"
+    ],
+    duration: "Systems Project",
+    role: "Systems & Concurrency Engineer"
+  },
+  {
+    title: "JanNivaran — Civic Issue Reporting & Resolution",
+    tag: "Full-stack / AI",
+    category: "Full Stack",
+    description: "Full-stack civic issue reporting platform featuring geotagged complaint workflows, AI priority classification with Google Gemini, role-based access, and multimedia verification.",
+    tech: ["React", "Node.js", "Express.js", "MongoDB", "REST APIs", "Google Gemini", "Google Maps"],
+    highlights: [
+      "AI grievance triage & classification with Gemini",
+      "Geotagged complaint tracking with Google Maps"
+    ],
+    icon: ShieldCheck,
+    github: "https://github.com/Shreyawangikar",
+    problem: "Citizens lack transparent, geotagged systems to report civic infrastructure issues, while municipal departments struggle to prioritize complaints objectively and verify resolutions.",
+    solution: "An end-to-end civic reporting platform with layered MVC architecture, AI priority classification with Google Gemini, reverse geocoding via Google Maps, role-based workflows (Citizen, Dept Admin, Superadmin), and Cloudinary media verification.",
+    features: [
+      "Geotagged complaint submission with reverse geocoding via Google Maps API",
+      "AI-based priority classification and sentiment triage using Google Gemini",
+      "Role-based authorization (RBAC) for citizen, department-admin, and superadmin workflows",
+      "Layered backend architecture (routes, middleware, controllers, services, MongoDB models)",
+      "Resolution proof and evidence management with image and voice upload via Cloudinary",
+      "Real-time status tracking pipeline with citizen feedback and rating loop",
+      "Secure JWT authentication with encrypted session management"
+    ],
+    architecture: "React Frontend → Express.js Layered REST API (Routes/Middleware/Controllers/Services) → MongoDB Models → Google Gemini API (AI Classification) → Google Maps (Geotagging) → Cloudinary (Evidence Storage)",
+    achievements: [
+      "Automated grievance prioritization with Google Gemini AI",
+      "3-tier role-based access control (Citizen, Department Admin, Superadmin)",
+      "End-to-end geotagged multimedia verification pipeline"
+    ],
+    duration: "Full Stack Project",
+    role: "Full Stack & AI Engineer"
+  },
+  {
     title: "Career Tracking Platform",
     tag: "AI / Full-stack",
-    description: "AI-powered career recommendations with alumni tracking dashboards. Built during a 36-hour hackathon.",
-    tech: ["React", "Node.js", "MongoDB", "OpenAI", "TailwindCSS"],
+    category: "AI/ML",
+    description: "AI-powered career recommendations with alumni tracking dashboards built during Mastercard Code for Change 2025.",
+    tech: ["React", "Node.js", "MongoDB", "REST APIs", "Tailwind CSS"],
+    highlights: [
+      "Alumni career tracking dashboard",
+      "AI-powered mentor and career matching"
+    ],
     icon: Sparkles,
     github: "https://github.com/Shreyawangikar",
     problem: "Students struggle to find relevant career paths and lack connection to alumni who could mentor them.",
@@ -156,153 +274,116 @@ const projects: ProjectDetails[] = [
       "Interactive career exploration tools",
       "Automated mentor matching algorithm"
     ],
-    architecture: "React frontend → Express API → MongoDB → OpenAI GPT-4 for recommendations → Real-time updates via WebSockets",
-    achievements: ["Hackathon Finalist", "36-hour build", "500+ recommendations generated"],
-    duration: "36 hours",
+    architecture: "React frontend → Express API → MongoDB → Intelligent recommendation services",
+    achievements: ["Mastercard Code for Change 2.0 Finalist (2025)", "Rapid 36-hour sprint prototype"],
+    duration: "Hackathon Project",
     role: "Full Stack Developer"
   },
   {
-    title: "GlobeTrotter",
-    tag: "Full-stack",
-    description: "Multi-city travel planner with budget tracking, interactive calendar, and itinerary suggestions.",
-    tech: ["React", "Express", "PostgreSQL", "Maps API", "Chart.js"],
+    title: "AR Image & Surface Tracking Experience",
+    tag: "AR/VR",
+    category: "AR/VR",
+    description: "Interactive augmented reality application developed using Unity and Vuforia exploring Image Targets, Multi-Image Targets, and Ground Plane detection.",
+    tech: ["Unity", "Vuforia", "C#", "ARCore"],
+    highlights: [
+      "Ground Plane plane-detection for 3D placement",
+      "Image Target tracking & interactive overlays"
+    ],
     icon: Globe,
-    github: "https://github.com/Shreyawangikar",
-    problem: "Planning multi-city trips is complex and time-consuming, with budget tracking often done separately.",
-    solution: "An integrated travel planning platform that combines itinerary creation, budget management, and real-time suggestions in one seamless experience.",
+    problem: "Understanding spatial computing, environmental surface detection, and target-based tracking principles in interactive immersive media.",
+    solution: "Built AR experiences implementing surface anchoring, multi-target tracking, and interactive spatial asset manipulation.",
     features: [
-      "Multi-city trip planning",
-      "Interactive budget tracker with charts",
-      "Calendar-based itinerary view",
-      "Smart destination suggestions",
-      "Expense categorization",
-      "Shareable trip plans"
+      "Image Target tracking and dynamic 3D asset rendering",
+      "Multi-Image target tracking with synchronized animations",
+      "Ground Plane surface detection and spatial coordinate mapping"
     ],
-    architecture: "React + Redux → REST API → PostgreSQL with pg_trgm for search → Google Maps integration",
-    duration: "3 weeks",
-    role: "Full Stack Developer"
+    architecture: "Unity 3D Engine → Vuforia SDK / ARCore → Real-time camera feed computer vision",
+    duration: "PICT IT × CDAC Pune Training Project",
+    role: "AR Developer"
   },
   {
-    title: "SkillSprint",
-    tag: "SaaS",
-    description: "Productivity tool with Kanban boards, real-time tracking, and authentication for team management.",
-    tech: ["React", "Node.js", "MongoDB", "Socket.io", "JWT"],
-    icon: Zap,
-    github: "https://github.com/Shreyawangikar",
-    problem: "Teams need a simple yet powerful tool to manage tasks and track project progress in real-time.",
-    solution: "A real-time collaborative platform with Kanban boards, team management, and customizable workflows.",
-    features: [
-      "Drag-and-drop Kanban boards",
-      "Real-time collaboration",
-      "Team management with roles",
-      "Custom workflow automation",
-      "Progress analytics dashboard",
-      "Notification system"
+    title: "Self-Supervised Visual Representation Learning",
+    tag: "AI / Computer Vision",
+    category: "AI/ML",
+    description: "Academic exploration of self-supervised visual representation methods (SimCLR and BYOL) for unsupervised feature extraction without manual annotations.",
+    tech: ["Python", "Deep Learning", "Computer Vision", "SimCLR", "BYOL"],
+    highlights: [
+      "Contrastive representation learning with SimCLR",
+      "Bootstrap Your Own Latent (BYOL) experimentation"
     ],
-    architecture: "React frontend → Socket.io for real-time → Express API → MongoDB with change streams",
-    duration: "4 weeks",
-    role: "Lead Developer"
+    icon: Brain,
+    problem: "Supervised visual learning requires vast quantities of expensive labeled data, limiting scalability.",
+    solution: "Explored self-supervised contrastive and predictive paradigms (SimCLR & BYOL) to evaluate feature representation quality on image datasets.",
+    features: [
+      "Data augmentation pipelines (random crops, color jitter, Gaussian blur)",
+      "Contrastive loss evaluation & latent space clustering",
+      "Representation transferability assessment"
+    ],
+    architecture: "Python → PyTorch / TensorFlow pipelines → ResNet backbones → Contrastive projection heads",
+    duration: "Academic Research Project",
+    role: "Machine Learning Researcher"
   },
   {
     title: "Subscription Management System",
-    tag: "ERP",
-    description: "Production-style ERP platform for subscription-based businesses. Manages recurring billing, lifecycle workflows, invoicing, and financial rules. Finalist at Odoo x SNS Hackathon 2026.",
-    tech: ["JavaScript", "Node.js", "Express", "Prisma", "React", "Vite", "TailwindCSS", "PostgreSQL"],
+    tag: "ERP / Full-stack",
+    category: "Full Stack",
+    description: "ERP platform for subscription businesses managing recurring billing, lifecycle workflows, invoicing, and financial rules. Finalist at Odoo x SNS Hackathon 2026.",
+    tech: ["JavaScript", "Node.js", "Express", "React", "PostgreSQL", "Tailwind CSS"],
+    highlights: [
+      "Subscription lifecycle engine (Draft to Active)",
+      "Automated recurring invoice generation"
+    ],
     icon: CreditCard,
     github: "https://github.com/Shreyawangikar",
-    problem: "Subscription-based businesses need a unified system to manage complex workflows: recurring billing, plan configuration, tax/discount rules, lifecycle transitions, invoicing, and financial reporting — typically handled by fragmented tools.",
-    solution: "A modular ERP-style web application with MVC architecture that automates the complete subscription lifecycle, from quotation through activation to closure, with integrated tax/discount engines, recurring billing automation, and comprehensive analytics.",
+    problem: "Subscription businesses need a unified system to manage complex workflows: recurring billing, plan configuration, tax/discount rules, lifecycle transitions, invoicing, and financial reporting.",
+    solution: "A modular ERP-style web application with MVC architecture that automates the complete subscription lifecycle, from quotation through activation to closure.",
     features: [
       "Subscription lifecycle engine (Draft → Quotation → Confirmed → Active → Closed)",
       "Auto-generated invoices based on billing intervals (Daily/Weekly/Monthly/Yearly)",
       "Role-based access control (Admin, Internal User, Portal User)",
-      "Dynamic tax & discount rule engine with usage limits & thresholds",
-      "Configurable recurring plans with minimum quantity enforcement",
-      "Real-time payment tracking & overdue invoice alerts",
-      "Revenue summaries & subscription analytics dashboards",
-      "JWT-based authentication with email/password validation",
-      "Status transitions with validation checks",
-      "Shareable customer portal views"
+      "Dynamic tax & discount rule engine with usage limits & thresholds"
     ],
-    architecture: "Backend: Controllers (auth, invoices, payments, plans, reports) → Routes → Auth/Role/Error handling Middleware → Prisma ORM → PostgreSQL. Frontend: React components with Context API (Auth, Theme) → Protected routes via RBAC → TailwindCSS styling. Lifecycle modeling at controller level, financial computation with safeguards.",
+    architecture: "Backend: Express controllers & routes with PostgreSQL database. Frontend: React components with Tailwind CSS styling.",
     achievements: [
-      "Selected as Hackathon Finalist",
-      "3–4 structured architectural review rounds",
-      "Production-grade system design evaluation",
-      "Deep-dive mentoring on database schema, lifecycle modeling, and scalability planning"
+      "Odoo x SNS Coimbatore Hackathon Finalist (2026)",
+      "Production-grade system design review"
     ],
-    duration: "Hackathon (48 hours) + Production refinement",
+    duration: "Hackathon + Refinement",
     role: "Full Stack / System Architect"
   },
   {
-    title: "WordleX — Entropy-Driven Wordle Solver",
-    tag: "Algorithm / Product",
-    description: "Production-deployed entropy-based Wordle solver combining information theory, optimized search algorithms, and cloud infrastructure with CI/CD automation.",
-    tech: ["React", "TypeScript", "Vite", "Firebase", "GitHub Actions", "Framer Motion"],
-    icon: Brain,
-    github: "https://github.com/Shreyawangikar",
-    live: "https://wordlex-solver.web.app/",
-    problem: "Standard Wordle solvers use naive filtering. They lack algorithmic sophistication, visual explanation, or production-level deployment — making them unsuitable as portfolio projects showcasing computer science rigor.",
-    solution: "WordleX uses information theory to select optimal guesses by maximizing expected information gain (entropy). Each guess partitions the solution space, and the algorithm ranks guesses by their ability to reduce uncertainty most effectively.",
-    features: [
-      "Entropy-based guess ranking using information theory",
-      "Dynamic candidate set partitioning by feedback patterns",
-      "Interactive visualization of partition distributions",
-      "Tooltip explanations for entropy calculations",
-      "Real-time feedback integration (Gray/Yellow/Green)",
-      "Animated candidate elimination",
-      "Daily puzzle reset logic with streak tracking",
-      "Firebase authentication & persistent state",
-      "Responsive mobile-first design",
-      "Dark mode toggle",
-      "Polished UX with win celebrations & onboarding"
-    ],
-    architecture: "Frontend: React + TypeScript for type safety → Vite for fast bundling → Framer Motion for animations. Algorithm: Entropy computation for candidate set → Partition modeling by feedback patterns → Probabilistic ranking. Deployment: Firebase Hosting, GitHub Actions CI/CD, automatic deployment on push. State sync: Complex synchronization between grid, keyboard, candidate set, and entropy rankings.",
-    achievements: [
-      "Production-deployed on Firebase",
-      "Integrated CI/CD pipeline with GitHub Actions",
-      "Information theory & algorithmic optimization",
-      "Complex React state management",
-      "DevOps & cloud infrastructure experience"
-    ],
-    duration: "3-4 weeks",
-    role: "Algorithm Engineer / Full Stack Developer"
-  },
-  {
     title: "Shreya's Portfolio Website",
-    tag: "Full-stack",
-    description: "A modern, interactive developer portfolio featuring an AI-powered chatbot, 3D animations, dark/light themes, and a Flask backend deployed on Render.",
-    tech: ["React", "TypeScript", "Vite", "TailwindCSS", "Framer Motion", "Flask", "Python", "OpenRouter API"],
+    tag: "Full-stack / AI",
+    category: "Full Stack",
+    description: "Modern, interactive developer portfolio featuring Google Gemini AI chatbot assistance, responsive design, dark/light themes, and contact notifications via Resend.",
+    tech: ["React", "TypeScript", "Vite", "Tailwind CSS", "Framer Motion", "Python", "Flask", "Gemini API"],
+    highlights: [
+      "Integrated Google Gemini AI assistant",
+      "Direct Resend email delivery & contact workflow"
+    ],
     icon: Layout,
     github: "https://github.com/Shreyawangikar/shreya-portfolio",
     live: "https://shreya-portfolio-azure.vercel.app",
-    problem: "Generic portfolio templates lack personality, interactivity, and fail to showcase real engineering skills — recruiters rarely remember them.",
-    solution: "A custom-built portfolio with an AI chatbot that answers questions about Shreya, smooth animations, a command palette, and a fully deployed Flask backend with rate limiting and conversation memory.",
+    problem: "Static resumes lack interactivity and conversational depth for recruiters to explore an engineer's technical skills.",
+    solution: "Engineered a personalized portfolio featuring an AI assistant backed by Google Gemini, live activity insights, clean project case studies, and responsive design.",
     features: [
-      "AI chatbot powered by OpenRouter (Liquid LFM model)",
-      "Conversation memory with last 5 messages for context",
-      "Rate limiting (20 req/min) with sliding window",
-      "3D scene with Three.js",
-      "Command palette (Ctrl+K) for quick navigation",
-      "Dark/light theme toggle",
-      "Interactive project modals with detailed case studies",
-      "GitHub & LeetCode stats integration",
-      "Responsive design with mobile support",
-      "SQLite chat logging for analytics"
+      "Interactive AI assistant powered by Google Gemini",
+      "Command palette (Ctrl+K) for rapid navigation",
+      "Dynamic theme toggle (Dark / Light mode)",
+      "Direct Resend email contact workflow",
+      "Responsive layout for mobile, tablet, and desktop"
     ],
-    architecture: "Frontend: React + TypeScript + Vite → TailwindCSS + Framer Motion for UI → Vercel deployment. Backend: Flask + Gunicorn → OpenRouter API for AI → SQLite for chat logs → Render deployment. CORS configured for cross-origin communication.",
+    architecture: "Frontend: React + Vite + TypeScript + Tailwind CSS. Backend: Python Flask service + Google Gemini API + Resend email service.",
     achievements: [
-      "Full-stack deployment (Vercel + Render)",
-      "AI integration with conversation context",
-      "Production-grade backend with rate limiting",
-      "Custom design from scratch — no templates"
+      "Production-deployed on Vercel & Render",
+      "Real-time conversational AI integration"
     ],
-    duration: "2 weeks",
-    role: "Full Stack Developer / Designer"
+    duration: "Full Stack Project",
+    role: "Full Stack Developer"
   },
 ];
 
-const categories = ["All", "AI / Full-stack", "Full-stack", "SaaS", "ERP", "Algorithm / Product"];
+const categories = ["All", "Full Stack", "AI/ML", "AR/VR", "Academic"];
 
 const ProjectsSection = () => {
   const ref = useRef(null);
@@ -318,7 +399,7 @@ const ProjectsSection = () => {
 
   const filteredProjects = activeFilter === "All" 
     ? projects 
-    : projects.filter(p => p.tag === activeFilter);
+    : projects.filter(p => p.category === activeFilter);
 
   const openProjectModal = (project: ProjectDetails) => {
     setSelectedProject(project);

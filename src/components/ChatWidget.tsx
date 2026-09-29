@@ -5,14 +5,43 @@ import ReactMarkdown from "react-markdown";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
-// Production backend URL
-const CHAT_URL = "https://shreya-portfolio-p5o1.onrender.com/api/chat";
+// Multi-tier AI configuration
+const GEMINI_KEY = import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY || "AIzaSyBxxqedL9xlHd12H3hKNQ-O_9dnWeDm_L8";
+const BACKEND_BASE = (import.meta.env.VITE_PYTHON_API_URL || "http://localhost:5000").replace(/\/+$/, "");
+const BACKEND_CHAT_URL = BACKEND_BASE.endsWith("/api/chat") ? BACKEND_BASE : `${BACKEND_BASE}/api/chat`;
+const RENDER_CHAT_URL = "https://shreya-portfolio-p5o1.onrender.com/api/chat";
+
+const SHREYA_SYSTEM_PROMPT = `You are an AI assistant for Shreya Wangikar's personal portfolio website.
+Answer professionally, clearly, and concisely with technical depth.
+
+About Shreya:
+- Final-year B.E. Information Technology student (2023–2027) at Pune Institute of Computer Technology (PICT), Savitribai Phule Pune University, CGPA: 8.53.
+- Contact: wangikarshreya@gmail.com | +91 89838 07663 | Pune, Maharashtra, India.
+- GitHub: https://github.com/Shreyawangikar | LinkedIn: https://www.linkedin.com/in/shreya-wangikar
+
+Key Projects:
+1. Collaborative Design Platform (Next.js 14, TypeScript, Fabric.js, Liveblocks): Real-time collaborative canvas design tool enabling multiplayer editing, live presence, and state synchronization.
+2. TaskForge — Multithreaded Job Scheduler (C++, STL, CMake): Worker thread pool, priority execution, cycle-detected DAG dependency resolution, thread-safe synchronization with mutexes & condition variables.
+3. JanNivaran — Civic Issue Reporting & Resolution Platform (React, Node.js, Express.js, MongoDB, Google Gemini, Google Maps): Geotagged complaint tracking, AI priority classification, role-based authorization for 3 user tiers.
+4. Career Tracking Platform: Mastercard Code for Change 2.0 (2025) Finalist. AI alumni tracking & recommendations.
+5. Subscription Management System (ERP): Odoo x SNS Coimbatore Hackathon 2026 Finalist. Recurring billing, invoice generation, tax & discount engines, RBAC.
+6. AR Image & Surface Tracking Experience: Unity & Vuforia immersive AR application with Ground Plane & Image Target tracking.
+7. Self-Supervised Visual Representation Learning: Academic exploration of SimCLR and BYOL contrastive learning.
+
+Skills:
+- Languages: C++, Python, JavaScript, SQL, Java
+- Frontend: React.js, Next.js, HTML, CSS, Tailwind CSS
+- Backend: Node.js, Express.js, REST APIs
+- Databases: MySQL, MongoDB, SQL
+- Core CS: Data Structures & Algorithms, Object-Oriented Programming, DBMS, Operating Systems, Computer Networks, Software Engineering
+- AI/ML: Machine Learning, Deep Learning, Self-Supervised Learning (SimCLR, BYOL), Computer Vision
+- Tools & Specialized: Fabric.js, Liveblocks, Unity, Vuforia, ARCore, Git, GitHub, Vercel, Render, VS Code`;
 
 const quickQuestions = [
   "What projects has Shreya built?",
+  "Tell me about TaskForge and JanNivaran",
   "What technologies does she know?",
   "Tell me about her hackathons",
-  "Summarize her profile",
 ];
 
 // Animated Chat Prompt Component
@@ -112,32 +141,83 @@ const ChatWidget = () => {
     setLoading(true);
 
     try {
-      // Send last 5 messages for context
       const recentMessages = [...messages, userMsg].slice(-5);
+      let reply = "";
 
-      const resp = await fetch(CHAT_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ messages: recentMessages }),
-      });
-
-      if (!resp.ok) {
-        throw new Error("AI request failed");
+      // 1. Try local or configured backend first
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 6000);
+        const resp = await fetch(BACKEND_CHAT_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ messages: recentMessages }),
+          signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data.reply) reply = data.reply;
+        }
+      } catch (err) {
+        console.warn("Backend chat unavailable, attempting direct fallback...", err);
       }
 
-      const data = await resp.json();
+      // 2. Try direct Gemini API if backend didn't respond
+      if (!reply && GEMINI_KEY) {
+        try {
+          const contents = recentMessages.map((m) => ({
+            role: m.role === "user" ? "user" : "model",
+            parts: [{ text: m.content }],
+          }));
+          const geminiResp = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                contents,
+                systemInstruction: { parts: [{ text: SHREYA_SYSTEM_PROMPT }] },
+                generationConfig: { temperature: 0.7, maxOutputTokens: 600 },
+              }),
+            }
+          );
+          if (geminiResp.ok) {
+            const data = await geminiResp.json();
+            const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (text) reply = text.trim();
+          }
+        } catch (err) {
+          console.warn("Direct Gemini fallback failed:", err);
+        }
+      }
 
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: data.reply },
-      ]);
+      // 3. Try Render production backend as last resort
+      if (!reply) {
+        try {
+          const resp = await fetch(RENDER_CHAT_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ messages: recentMessages }),
+          });
+          if (resp.ok) {
+            const data = await resp.json();
+            if (data.reply) reply = data.reply;
+          }
+        } catch (err) {
+          console.error("Render chat request failed:", err);
+        }
+      }
 
+      if (reply) {
+        setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
+      } else {
+        throw new Error("All chat providers failed");
+      }
     } catch (err) {
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: "Something went wrong. Please try again." },
+        { role: "assistant", content: "I'm having trouble connecting right now. Please feel free to reach out to Shreya directly at wangikarshreya@gmail.com or +91 89838 07663!" },
       ]);
     }
 

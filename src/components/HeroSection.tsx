@@ -4,7 +4,12 @@ import { ArrowDown, Github, Linkedin, Mail, MapPin, Briefcase } from "lucide-rea
 
 const Scene3D = lazy(() => import("@/components/Scene3D"));
 
-const roles = ["Backend Systems Engineer", "Full Stack Developer", "Algorithm Architect"];
+const roles = [
+  "Backend Systems & REST APIs",
+  "C++ Multithreading Engineer",
+  "Full Stack Developer",
+  "AI & Systems Builder"
+];
 
 const HeroSection = () => {
   const [roleIndex, setRoleIndex] = useState(0);
@@ -74,9 +79,9 @@ const HeroSection = () => {
             transition={{ delay: 0.2, duration: 0.6 }}
             className="flex items-center justify-center gap-4 flex-wrap text-sm text-muted-foreground mb-8"
           >
-            <span className="inline-flex items-center gap-1.5">
+            <span className="inline-flex items-center gap-1.5 font-medium text-foreground">
               <Briefcase size={14} className="text-primary" />
-              Full Stack Developer
+              Final-Year B.E. IT @ PICT (CGPA: 8.53)
             </span>
             <span className="hidden sm:inline text-border">|</span>
             <span className="inline-flex items-center gap-1.5">
@@ -85,14 +90,14 @@ const HeroSection = () => {
             </span>
             <span className="hidden sm:inline text-border">|</span>
             <span className="inline-flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-green-500" />
-              Open to Internship / Full-time
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              Open to Opportunities
             </span>
           </motion.div>
 
           {/* Name */}
           <motion.p
-            className="text-primary font-mono text-sm tracking-[0.15em] uppercase mb-6"
+            className="text-primary font-mono text-sm tracking-[0.15em] uppercase mb-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
@@ -100,14 +105,14 @@ const HeroSection = () => {
             Shreya Wangikar
           </motion.p>
 
-          {/* H1 — 48px/56px as specified */}
-          <h1 className="text-4xl sm:text-[48px] lg:text-[56px] font-semibold leading-[1.15] tracking-tight mb-6">
+          {/* H1 — Primary positioning */}
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-semibold leading-[1.2] tracking-tight mb-6 max-w-4xl mx-auto">
             <motion.span
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35, duration: 0.7 }}
             >
-              Building Scalable
+              Final-Year IT Engineer
             </motion.span>
             <br />
             <motion.span
@@ -116,39 +121,50 @@ const HeroSection = () => {
               transition={{ delay: 0.45, duration: 0.7 }}
               className="gradient-text"
             >
-              Full-Stack
+              Full Stack Developer
             </motion.span>
             <motion.span
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.55, duration: 0.7 }}
             >
-              {" "}Backend Systems.
+              {" "}· AI/ML Enthusiast
             </motion.span>
           </h1>
 
+          {/* Supporting text */}
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.65, duration: 0.6 }}
+            className="text-muted-foreground text-sm sm:text-base max-w-2xl mx-auto mb-8 leading-relaxed"
+          >
+            Building full-stack web applications, solving core software engineering problems, and exploring AI/ML systems.
+          </motion.p>
+
           {/* Typewriter role */}
           <div className="h-7 mb-8">
-            <span className="font-mono text-sm text-muted-foreground">
+            <span className="font-mono text-xs sm:text-sm text-muted-foreground">
               &gt; {displayed}
               <span className="inline-block w-[2px] h-4 bg-primary ml-0.5 align-middle animate-pulse" />
             </span>
           </div>
 
-          {/* Impact metrics — scannable in 5 seconds */}
+          {/* Impact metrics */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
-            className="flex justify-center gap-8 mb-10"
+            transition={{ delay: 0.75 }}
+            className="flex justify-center gap-6 sm:gap-10 mb-10 flex-wrap"
           >
             {[
-              { num: "5+", label: "Production Apps" },
-              { num: "200+", label: "DSA Solved" },
-              { num: "2x", label: "Hackathon Finalist" },
+              { num: "8.53", label: "CGPA @ PICT" },
+              { num: "2023–27", label: "B.E. IT" },
+              { num: "Mastercard", label: "Code for Change '25" },
+              { num: "Odoo '26", label: "Hackathon Finalist" },
             ].map((m) => (
               <div key={m.label} className="text-center">
-                <p className="text-2xl font-semibold text-foreground">{m.num}</p>
+                <p className="text-xl sm:text-2xl font-semibold text-foreground">{m.num}</p>
                 <p className="text-xs text-muted-foreground mt-1">{m.label}</p>
               </div>
             ))}

@@ -5,11 +5,11 @@ import Logo from "./Logo";
 import { useTheme } from "@/contexts/ThemeContext";
 
 const navItems = [
+  { label: "Home", href: "#hero" },
   { label: "About", href: "#about" },
-  { label: "Projects", href: "#projects" },
   { label: "Skills", href: "#skills" },
-  { label: "Certifications", href: "#certifications" },
-  { label: "Why Me", href: "#why-hire-me" },
+  { label: "Projects", href: "#projects" },
+  { label: "Experience", href: "#experience" },
   { label: "Contact", href: "#contact" },
 ];
 

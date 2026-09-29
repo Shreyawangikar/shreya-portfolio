@@ -3,9 +3,9 @@ import { useRef } from "react";
 import { Award, Target, Code } from "lucide-react";
 
 const items = [
-  { icon: Award, year: "2026", title: "Odoo x SNS Hackathon Finalist", desc: "Built full ERP subscription lifecycle system with recurring billing engine, tax rule processor, role-based access control, and production-ready MVC architecture. Underwent 3–4 architectural review rounds competing against advanced systems." },
-  { icon: Target, year: "2025", title: "Mastercard Code for Change 2.0 Finalist", desc: "Delivered innovative full-stack solution for financial inclusion challenges. Completed 36-hour intensive build with scalable backend and polished frontend." },
-  { icon: Code, year: "2024–25", title: "200+ DSA Problems Solved", desc: "Consistent daily problem solving across LeetCode. Demonstrates algorithmic rigor, optimization thinking, and continuous learning mindset." },
+  { icon: Award, year: "2026", title: "Odoo x SNS Coimbatore Hackathon Finalist", desc: "Designed and implemented a scalable technology solution through collaborative software development and product ideation, demonstrating structured problem solving, rapid prototyping, and technical communication." },
+  { icon: Target, year: "2025", title: "Mastercard Code for Change 2.0 Finalist", desc: "Collaborated in a cross-functional team to design and develop an AI-powered solution, contributing to solution architecture, backend development, technical presentations, and iterative Agile development." },
+  { icon: Code, year: "2024–Present", title: "250+ Problems Solved across DSA & SQL", desc: "Solved 250+ problems across Data Structures & Algorithms, SQL, and algorithmic problem solving with focus on optimization, edge cases, debugging, and time/space complexity." },
 ];
 
 const AchievementsSection = () => {
@@ -13,7 +13,7 @@ const AchievementsSection = () => {
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="achievements" className="py-20 relative" ref={ref}>
+    <section id="experience" className="py-20 relative" ref={ref}>
       <div className="max-w-6xl mx-auto px-6">
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -21,7 +21,7 @@ const AchievementsSection = () => {
           transition={{ duration: 0.6 }}
           className="text-primary font-mono text-xs tracking-[0.15em] uppercase mb-3"
         >
-          Milestones
+          Practical Milestones
         </motion.p>
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -29,7 +29,7 @@ const AchievementsSection = () => {
           transition={{ delay: 0.05, duration: 0.6 }}
           className="text-[32px] font-semibold tracking-tight mb-10"
         >
-          Achievements<span className="gradient-text">.</span>
+          Experience & Achievements<span className="gradient-text">.</span>
         </motion.h2>
 
         <div className="relative">
