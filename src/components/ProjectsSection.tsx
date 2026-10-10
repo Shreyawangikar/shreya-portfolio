@@ -157,6 +157,78 @@ const ProjectCard = ({
 
 const projects: ProjectDetails[] = [
   {
+    title: "RepoTalk — AI Codebase Explorer & Chat (RAG)",
+    tag: "RAG / Full-stack",
+    category: "Full Stack",
+    description: "An authenticated RAG platform enabling developers to connect any GitHub repository and perform natural-language codebase Q&A with language-aware chunking and citation-backed Gemini answers.",
+    tech: ["React 19", "FastAPI", "Python", "LangChain", "MongoDB Atlas", "Gemini API", "Express.js", "Node.js", "Tailwind CSS"],
+    highlights: [
+      "Production RAG pipeline with LangChain & MongoDB Atlas Vector Search",
+      "Language-aware code chunking (150-char overlap) & Gemini embeddings",
+      "Decoupled 3-layer architecture: React 19 SPA, Express API, FastAPI AI service",
+      "Source-file citation tracking with syntax-highlighted answers"
+    ],
+    icon: Brain,
+    github: "https://github.com/Shreyawangikar",
+    live: "https://repo-chat-production-bc53.up.railway.app/chat/anandlavhale/Repo-chat/main",
+    problem: "Exploring and understanding unfamiliar codebases requires tedious manual inspection across complex file hierarchies. Generic LLMs lack private or branch-specific repository context and easily exceed context token limits or hallucinate nonexistent functions.",
+    solution: "Engineered a robust retrieval-augmented generation (RAG) platform. The system clones GitHub repositories on demand, filters source files (.py, .js, .ts, .java, .cpp, .go, .md), chunks them with language-aware splitters, embeds chunks via Google Gemini, stores vectors in MongoDB Atlas Vector Search, and retrieves top-5 repository-scoped contexts to generate accurate responses with source-file citations.",
+    features: [
+      "Dynamic GitHub repository cloning and branch indexing using LangChain GitLoader",
+      "Language-aware recursive chunking preserving functional boundaries across 7+ programming languages",
+      "Vector similarity retrieval (k=5) with repository-scoped metadata filtering in MongoDB Atlas Vector Search",
+      "Three-layer decoupled architecture separating web concerns (Express) from AI orchestration (FastAPI)",
+      "Interactive chat interface with optimistic UI updates, Markdown rendering, and code syntax highlighting",
+      "Automatic source-file attribution displaying referenced files for verifiable answers",
+      "Automated TTL vector index expiration (48 hours) to prevent unbounded database growth",
+      "Secure stateless authentication with HTTP-only JWT cookies and route protection"
+    ],
+    architecture: "React 19 Frontend (Vite) → Express.js Gateway (JWT Auth, Cookies & MongoDB Chat History) → FastAPI AI Service → LangChain GitLoader & Splitters → Google Gemini Embeddings → MongoDB Atlas Vector Search (Top-5 Retrieval) → Google Gemini Chat Model",
+    achievements: [
+      "Sub-second vector similarity retrieval over cloned codebases",
+      "Zero-hallucination source attribution citing exact file paths",
+      "Decoupled microservice architecture deployed with Docker & Railway"
+    ],
+    duration: "Full Stack & AI Project",
+    role: "Full Stack & AI Engineer"
+  },
+  {
+    title: "JanNivaran — Civic Issue Reporting & Resolution",
+    tag: "Full-stack / AI",
+    category: "Full Stack",
+    description: "Full-stack crowdsourced civic issue platform with reverse-geocoded GPS reporting, Google Gemini AI priority triage, role-based workflows, and photo/audio evidence verification.",
+    tech: ["React 19", "Node.js", "Express 5", "MongoDB", "Google Gemini", "Google Maps API", "Cloudinary", "Recharts", "Tailwind CSS"],
+    highlights: [
+      "AI grievance triage & priority classification with Gemini 1.5 Flash",
+      "Geotagged complaint tracking & reverse geocoding via Google Maps",
+      "3-tier role-based access control (Citizen, Dept Admin, Superadmin)",
+      "Resolution proof upload with citizen rating & dispute reopen loop"
+    ],
+    icon: ShieldCheck,
+    github: "https://github.com/Shreyawangikar",
+    live: "https://civic-issue-reporting-topaz.vercel.app/",
+    problem: "Municipalities struggle to manage and prioritize civic grievances efficiently, while citizens lack transparent geotagged tracking and accountability mechanisms to verify resolutions.",
+    solution: "An end-to-end civic reporting platform featuring automated AI priority triage via Google Gemini 1.5 Flash, browser GPS capture with Google Maps reverse geocoding, multi-tier RBAC (Citizen, Department Admin, Superadmin), Cloudinary streaming for photos and voice notes, and administrative resolution proof verification.",
+    features: [
+      "Geotagged complaint submission with GPS auto-capture and reverse geocoding via Google Maps API",
+      "AI-driven priority classification (Low/Medium/High) using Google Gemini 1.5 Flash with graceful fallback",
+      "Multimedia evidence capture with mandatory photo and optional voice note streamed directly to Cloudinary",
+      "Interactive map dashboard with priority-colored markers and department-filtered views",
+      "3-tier role-based authorization: Citizen reporting, Department Admin resolution, Superadmin governance",
+      "Resolution proof workflow requiring photographic evidence from department admins to mark issues resolved",
+      "Citizen feedback and satisfaction rating (1-5 stars) with dispute reopen cycle for superadmin arbitration",
+      "Superadmin analytics dashboard with departmental workload bar charts and priority pie charts via Recharts"
+    ],
+    architecture: "React 19 SPA (Vercel) → Express.js 5 REST API (Render) → MongoDB Atlas (GeoJSON 2dsphere) → Google Gemini 1.5 Flash (AI Prioritization) → Google Maps API (Geocoding & Markers) → Cloudinary (Media CDN)",
+    achievements: [
+      "Deployed full-stack platform live on Vercel & Render",
+      "Automated grievance prioritization with Google Gemini AI",
+      "3-tier role-based access control with complete proof verification pipeline"
+    ],
+    duration: "Full Stack Project",
+    role: "Full Stack & AI Engineer"
+  },
+  {
     title: "Collaborative Design Platform",
     tag: "Next.js / Real-time",
     category: "Full Stack",
@@ -219,38 +291,6 @@ const projects: ProjectDetails[] = [
     ],
     duration: "Systems Project",
     role: "Systems & Concurrency Engineer"
-  },
-  {
-    title: "JanNivaran — Civic Issue Reporting & Resolution",
-    tag: "Full-stack / AI",
-    category: "Full Stack",
-    description: "Full-stack civic issue reporting platform featuring geotagged complaint workflows, AI priority classification with Google Gemini, role-based access, and multimedia verification.",
-    tech: ["React", "Node.js", "Express.js", "MongoDB", "REST APIs", "Google Gemini", "Google Maps"],
-    highlights: [
-      "AI grievance triage & classification with Gemini",
-      "Geotagged complaint tracking with Google Maps"
-    ],
-    icon: ShieldCheck,
-    github: "https://github.com/Shreyawangikar",
-    problem: "Citizens lack transparent, geotagged systems to report civic infrastructure issues, while municipal departments struggle to prioritize complaints objectively and verify resolutions.",
-    solution: "An end-to-end civic reporting platform with layered MVC architecture, AI priority classification with Google Gemini, reverse geocoding via Google Maps, role-based workflows (Citizen, Dept Admin, Superadmin), and Cloudinary media verification.",
-    features: [
-      "Geotagged complaint submission with reverse geocoding via Google Maps API",
-      "AI-based priority classification and sentiment triage using Google Gemini",
-      "Role-based authorization (RBAC) for citizen, department-admin, and superadmin workflows",
-      "Layered backend architecture (routes, middleware, controllers, services, MongoDB models)",
-      "Resolution proof and evidence management with image and voice upload via Cloudinary",
-      "Real-time status tracking pipeline with citizen feedback and rating loop",
-      "Secure JWT authentication with encrypted session management"
-    ],
-    architecture: "React Frontend → Express.js Layered REST API (Routes/Middleware/Controllers/Services) → MongoDB Models → Google Gemini API (AI Classification) → Google Maps (Geotagging) → Cloudinary (Evidence Storage)",
-    achievements: [
-      "Automated grievance prioritization with Google Gemini AI",
-      "3-tier role-based access control (Citizen, Department Admin, Superadmin)",
-      "End-to-end geotagged multimedia verification pipeline"
-    ],
-    duration: "Full Stack Project",
-    role: "Full Stack & AI Engineer"
   },
   {
     title: "Career Tracking Platform",

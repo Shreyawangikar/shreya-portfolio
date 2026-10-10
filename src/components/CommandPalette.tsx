@@ -37,6 +37,22 @@ import { useTheme } from "@/contexts/ThemeContext";
 // Projects data for search
 const projects = [
   {
+    title: "RepoTalk — AI Codebase Explorer & Chat (RAG)",
+    tag: "RAG / Full-stack",
+    description: "Talk to any GitHub repo with language-aware chunking, MongoDB vector search & Gemini AI",
+    tech: ["React 19", "FastAPI", "Python", "Node.js", "Express", "MongoDB Atlas", "LangChain", "Gemini API"],
+    icon: Brain,
+    live: "https://repo-chat-production-bc53.up.railway.app/chat/anandlavhale/Repo-chat/main",
+  },
+  {
+    title: "JanNivaran — Civic Issue Reporting & Resolution",
+    tag: "Full-stack / AI",
+    description: "Civic issue reporting platform with Google Gemini AI classification and geotagging",
+    tech: ["React 19", "Node.js", "Express 5", "MongoDB", "Google Gemini", "Google Maps"],
+    icon: ShieldCheck,
+    live: "https://civic-issue-reporting-topaz.vercel.app/",
+  },
+  {
     title: "Collaborative Design Platform",
     tag: "Next.js / Real-time",
     description: "Real-time collaborative design canvas with Fabric.js and Liveblocks",
@@ -49,13 +65,6 @@ const projects = [
     description: "Multithreaded C++ job scheduling engine with worker pools and DAG dependency resolution",
     tech: ["C++", "STL", "CMake", "Multithreading"],
     icon: Cpu,
-  },
-  {
-    title: "JanNivaran — Civic Issue Reporting & Resolution",
-    tag: "Full-stack / AI",
-    description: "Civic issue reporting platform with Google Gemini AI classification and geotagging",
-    tech: ["React", "Node.js", "Express", "MongoDB", "Google Gemini"],
-    icon: ShieldCheck,
   },
   {
     title: "Career Tracking Platform",

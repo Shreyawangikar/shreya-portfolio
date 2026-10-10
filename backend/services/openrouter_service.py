@@ -56,32 +56,41 @@ EDUCATION:
 3. Oasis's English School, Parbhani: SSC (2021) — 100%
 
 FEATURED PROJECTS:
-1. Collaborative Design Platform
+1. RepoTalk — AI Codebase Explorer & Chat (RAG)
+   - Tech Stack: React 19, FastAPI, Python, LangChain, MongoDB Atlas Vector Search, Google Gemini API, Express.js, Node.js, Tailwind CSS
+   - Live URL: https://repo-chat-production-bc53.up.railway.app/chat/anandlavhale/Repo-chat/main | GitHub: https://github.com/Shreyawangikar
+   - Authenticated developer application allowing users to connect any GitHub repository and perform natural-language codebase Q&A using RAG.
+   - Highlights: Language-aware code chunking (150-char overlap), vector embeddings via Google Gemini, MongoDB Atlas Vector Search (k=5 retrieval), and automated source-file citations.
+   - Decoupled 3-layer architecture: React 19 frontend, Express API gateway (JWT cookie auth & chat persistence), and FastAPI AI service.
+
+2. JanNivaran — Civic Issue Reporting & Resolution Platform
+   - Tech Stack: React 19, Node.js, Express 5, MongoDB, Google Gemini 1.5 Flash, Google Maps API, Cloudinary, Recharts, Tailwind CSS
+   - Live URL: https://civic-issue-reporting-topaz.vercel.app/ | GitHub: https://github.com/Shreyawangikar
+   - Full-stack civic reporting platform with geotagged complaint workflows, Google Gemini AI priority classification, and 3-tier role-based access control (Citizen, Dept Admin, Superadmin).
+   - Highlights: GPS reverse geocoding via Google Maps API, Cloudinary streaming for photos/audio, administrative resolution proof verification, citizen feedback & rating cycle, and superadmin analytics charts.
+
+3. Collaborative Design Platform
    - Tech Stack: Next.js 14, TypeScript, Fabric.js, Liveblocks, Tailwind CSS
    - Real-time collaborative design platform enabling users to create, edit, and collaborate on designs in a shared workspace.
    - Highlights: Canvas-based editing with Fabric.js, multiplayer presence & state synchronization via Liveblocks, responsive UI.
 
-2. TaskForge — Multithreaded Job Scheduler
+4. TaskForge — Multithreaded Job Scheduler
    - Tech Stack: C++, STL, CMake, Multithreading
    - Multithreaded C++ job scheduling engine with worker thread pools, priority execution, and DAG dependency resolution with cycle detection.
 
-3. JanNivaran — Civic Issue Reporting & Resolution Platform
-   - Tech Stack: React, Node.js, Express.js, MongoDB, REST APIs, Google Gemini, Google Maps
-   - Full-stack civic reporting platform with geotagged complaint workflows, Google Gemini AI priority classification, and role-based workflows.
-
-4. Career Tracking Platform
+5. Career Tracking Platform
    - Tech Stack: React, Node.js, MongoDB, REST APIs, Tailwind CSS
    - Hackathon Finalist at Mastercard Code for Change 2.0 (2025). AI-driven alumni career tracking and intelligent recommendations.
 
-5. Subscription Management System (ERP)
+6. Subscription Management System (ERP)
    - Tech Stack: JavaScript, Node.js, Express, React, PostgreSQL, Tailwind CSS
    - Hackathon Finalist at Odoo x SNS Coimbatore Hackathon 2026. Automated subscription lifecycle (Draft to Active) and recurring invoice generation.
 
-6. AR Image & Surface Tracking Experience
+7. AR Image & Surface Tracking Experience
    - Tech Stack: Unity, Vuforia, C#, ARCore
    - Immersive augmented reality application implementing Image Targets and Ground Plane surface detection.
 
-7. Self-Supervised Visual Representation Learning
+8. Self-Supervised Visual Representation Learning
    - Tech Stack: Python, Deep Learning, Computer Vision, SimCLR, BYOL
    - Academic research exploring contrastive representation learning without manual labels.
 

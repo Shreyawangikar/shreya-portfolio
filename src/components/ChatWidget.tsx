@@ -20,26 +20,34 @@ About Shreya:
 - GitHub: https://github.com/Shreyawangikar | LinkedIn: https://www.linkedin.com/in/shreya-wangikar
 
 Key Projects:
-1. Collaborative Design Platform (Next.js 14, TypeScript, Fabric.js, Liveblocks): Real-time collaborative canvas design tool enabling multiplayer editing, live presence, and state synchronization.
-2. TaskForge — Multithreaded Job Scheduler (C++, STL, CMake): Worker thread pool, priority execution, cycle-detected DAG dependency resolution, thread-safe synchronization with mutexes & condition variables.
-3. JanNivaran — Civic Issue Reporting & Resolution Platform (React, Node.js, Express.js, MongoDB, Google Gemini, Google Maps): Geotagged complaint tracking, AI priority classification, role-based authorization for 3 user tiers.
-4. Career Tracking Platform: Mastercard Code for Change 2.0 (2025) Finalist. AI alumni tracking & recommendations.
-5. Subscription Management System (ERP): Odoo x SNS Coimbatore Hackathon 2026 Finalist. Recurring billing, invoice generation, tax & discount engines, RBAC.
-6. AR Image & Surface Tracking Experience: Unity & Vuforia immersive AR application with Ground Plane & Image Target tracking.
-7. Self-Supervised Visual Representation Learning: Academic exploration of SimCLR and BYOL contrastive learning.
+1. RepoTalk — AI Codebase Explorer & Chat (RAG) (React 19, FastAPI, Python, Express.js, MongoDB Atlas Vector Search, LangChain, Google Gemini API):
+   - Authenticated developer application to connect any GitHub repository and ask natural-language questions about its codebase via RAG.
+   - Live URL: https://repo-chat-production-bc53.up.railway.app/chat/anandlavhale/Repo-chat/main | GitHub: https://github.com/Shreyawangikar
+   - Language-aware code chunking (150-char overlap), vector embeddings with Google Gemini, MongoDB Atlas Vector Search (k=5 retrieval), and citations of source files in Gemini-generated responses.
+   - Decoupled 3-layer architecture: React 19 frontend, Express API gateway (JWT cookie auth & chat persistence), and FastAPI AI service.
+2. JanNivaran — Civic Issue Reporting & Resolution Platform (React 19, Node.js, Express 5, MongoDB, Google Gemini 1.5 Flash, Google Maps API, Cloudinary, Recharts):
+   - Full-stack civic reporting platform with geotagged complaint workflows, Google Gemini AI priority classification, and 3-tier role-based access control (Citizen, Dept Admin, Superadmin).
+   - Live URL: https://civic-issue-reporting-topaz.vercel.app/ | GitHub: https://github.com/Shreyawangikar
+   - Photographic and audio voice note evidence via Cloudinary, reverse geocoding via Google Maps API, resolution proof verification, citizen feedback & rating cycle, and superadmin analytics charts.
+3. Collaborative Design Platform (Next.js 14, TypeScript, Fabric.js, Liveblocks): Real-time collaborative canvas design tool enabling multiplayer editing, live presence, and state synchronization.
+4. TaskForge — Multithreaded Job Scheduler (C++, STL, CMake): Worker thread pool, priority execution, cycle-detected DAG dependency resolution, thread-safe synchronization with mutexes & condition variables.
+5. Career Tracking Platform: Mastercard Code for Change 2.0 (2025) Finalist. AI alumni tracking & recommendations.
+6. Subscription Management System (ERP): Odoo x SNS Coimbatore Hackathon 2026 Finalist. Recurring billing, invoice generation, tax & discount engines, RBAC.
+7. AR Image & Surface Tracking Experience: Unity & Vuforia immersive AR application with Ground Plane & Image Target tracking.
+8. Self-Supervised Visual Representation Learning: Academic exploration of SimCLR and BYOL contrastive learning.
 
 Skills:
 - Languages: C++, Python, JavaScript, SQL, Java
 - Frontend: React.js, Next.js, HTML, CSS, Tailwind CSS
-- Backend: Node.js, Express.js, REST APIs
-- Databases: MySQL, MongoDB, SQL
+- Backend: Node.js, Express.js, FastAPI, REST APIs
+- Databases: MySQL, MongoDB, MongoDB Atlas Vector Search, SQL
 - Core CS: Data Structures & Algorithms, Object-Oriented Programming, DBMS, Operating Systems, Computer Networks, Software Engineering
-- AI/ML: Machine Learning, Deep Learning, Self-Supervised Learning (SimCLR, BYOL), Computer Vision
-- Tools & Specialized: Fabric.js, Liveblocks, Unity, Vuforia, ARCore, Git, GitHub, Vercel, Render, VS Code`;
+- AI/ML: Retrieval-Augmented Generation (RAG), LangChain, Google Gemini API, Machine Learning, Deep Learning, Self-Supervised Learning (SimCLR, BYOL), Computer Vision
+- Tools & Specialized: Fabric.js, Liveblocks, Unity, Vuforia, ARCore, Git, GitHub, Vercel, Render, Railway, VS Code`;
 
 const quickQuestions = [
   "What projects has Shreya built?",
-  "Tell me about TaskForge and JanNivaran",
+  "Tell me about RepoTalk and JanNivaran",
   "What technologies does she know?",
   "Tell me about her hackathons",
 ];
